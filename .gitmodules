@@ -1,0 +1,3 @@
+[submodule "portable-endian"]
+	path = portable-endian
+	url = https://github.com/BenWiederhake/portable-endian.git
