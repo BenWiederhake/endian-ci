@@ -25,11 +25,11 @@ unsigned int checks_passed = 0;
         actual_v = actual;  \
         expected_v = expected; \
         passed = actual_v == expected_v; \
-        printf("#%d, %d bits: %s\n", \
-            checks_run, \
-            bits, \
-            passed ? "PASS" : "FAIL"); \
         if (!passed) { \
+            printf("#%d, %d bits: %s\n", \
+                checks_run, \
+                bits, \
+                passed ? "PASS" : "FAIL"); \
             printf("\tExpression:   %s\n", #actual); \
             printf("\tActual:       %" modifier "lx\n", actual_v); \
             printf("\tExpected:     %s\n", #expected); \
@@ -58,7 +58,7 @@ void test_##bits() { \
     /* Are little and big endian actually correct? */ \
     for (i = 0; i < ((bits)/8); ++i) { \
         check_equal(bits,"02",v_as_le.as_uchars[i],(bits)/8 - i); \
-        check_equal(bits,"02",v_as_be.as_uchars[i],           i); \
+        check_equal(bits,"02",v_as_be.as_uchars[i],       1 + i); \
     } \
     /* Is the roundtrip nilpotent? */ \
     check_equal(bits,"0" #hexits,pe_le##bits##toh(v_as_le.as_uint),v.as_uint); \
