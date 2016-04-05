@@ -113,11 +113,25 @@ check-gcc: test-functionality.c
 	./bin/test-functionality
 #--
 	@rm -f bin/test-functionality
-	${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
-	    -o bin/test-functionality test-functionality.c
-	./bin/test-functionality
+	@echo ${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+		-o bin/test-functionality test-functionality.c
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>/dev/null; \
+	then \
+	    ${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+	        -o bin/test-functionality test-functionality.c; \
+		./bin/test-functionality; \
+	else \
+		echo " => SKIPPED, C11 not supported"; \
+	fi
 #--
 	@rm -f bin/test-functionality
-	${GCC} -std=c11 ${GCC_OPTS} \
-	    -o bin/test-functionality test-functionality.c
-	./bin/test-functionality
+	@echo ${GCC} -std=c11 ${GCC_OPTS} \
+		-o bin/test-functionality test-functionality.c
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>/dev/null; \
+	then \
+	    ${GCC} -std=c11 ${GCC_OPTS} \
+	        -o bin/test-functionality test-functionality.c; \
+		./bin/test-functionality; \
+	else \
+		echo " => SKIPPED, C11 not supported"; \
+	fi
