@@ -88,9 +88,16 @@ check-gcc: test-functionality.c
 #--
 #	Funny enough, gnu89 *does* include the 'inline' keyword.
 	@rm -f bin/test-functionality
-	${GCC} -std=gnu89 ${GCC_OPTS} \
+	@echo ${GCC} -std=gnu89 ${GCC_OPTS} \
 	    -o bin/test-functionality test-functionality.c
-	./bin/test-functionality
+	@if ${GCC} --version | grep -qc '^Apple.*clang' ; \
+	then \
+		echo "=> SKIPPED, gcc on mac is actually clang which behaves ... weirdly." ; \
+	else \
+		${GCC} -std=gnu89 ${GCC_OPTS} \
+			-o bin/test-functionality test-functionality.c; \
+		./bin/test-functionality; \
+	fi \
 #--
 	@rm -f bin/test-functionality
 	${GCC} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
@@ -117,11 +124,11 @@ check-gcc: test-functionality.c
 		-o bin/test-functionality test-functionality.c
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>/dev/null; \
 	then \
-	    ${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
-	        -o bin/test-functionality test-functionality.c; \
+		${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+			-o bin/test-functionality test-functionality.c; \
 		./bin/test-functionality; \
 	else \
-		echo " => SKIPPED, C11 not supported"; \
+		echo "=> SKIPPED, C11 not supported"; \
 	fi
 #--
 	@rm -f bin/test-functionality
@@ -133,5 +140,5 @@ check-gcc: test-functionality.c
 	        -o bin/test-functionality test-functionality.c; \
 		./bin/test-functionality; \
 	else \
-		echo " => SKIPPED, C11 not supported"; \
+		echo "=> SKIPPED, C11 not supported"; \
 	fi

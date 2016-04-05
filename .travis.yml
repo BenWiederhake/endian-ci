@@ -14,4 +14,5 @@ git:
   # TODO: When this repo has many commits, this might speed things up:
   # depth: 3
 script:
-  - make
+  - make check-gcc
+  - make check-clang
