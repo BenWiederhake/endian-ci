@@ -1,0 +1,10 @@
+language: c
+# Select Trusty Tahr.
+sudo: required
+dist: trusty
+git:
+  submodules: true
+  # TODO: When this repo has many commits, this might speed things up:
+  # depth: 3
+script:
+  - make
