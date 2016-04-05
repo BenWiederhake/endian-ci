@@ -9,10 +9,11 @@ matrix:
     - os: linux
       sudo: false
       env: OS_CODENAME="Precise Pangoblin"
+    - os: osx
+      env: OS_CODENAME="OS X 10"
 git:
   submodules: true
-  # TODO: When this repo has many commits, this might speed things up:
-  # depth: 3
+  depth: 3
 script:
   - make check-gcc
   - make check-clang
