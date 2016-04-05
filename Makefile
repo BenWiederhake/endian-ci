@@ -8,8 +8,63 @@
 
 GCC         ?= gcc
 GCC_OPTS    := -Wall -Wextra -Werror -pedantic -O2 -g
+CLANG       ?= clang
+CLANG_OPTS  := -Weverything -Werror -pedantic -O2 -g
 
-all: check-gcc
+all: check-clang check-gcc
+
+.PHONY: check-clang
+check-clang: test-functionality.c
+	@command -v "${CLANG}" > /dev/null || \
+	{  echo "clang not found, tried: ${CLANG}" && \
+	   echo "    override with 'CLANG=<your-clang>')" && \
+	   exit 1; }
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+#	C89 does not define the keyword "inline".  So for C89,
+#	one can't test without P_E_FORCE_INLINE re-defined properly.
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=gnu89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+#	Funny enough, gnu89 *does* include the 'inline' keyword,
+#	but clang doesn't accept it anyway.
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c99 ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=gnu99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=gnu99 ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c11 ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
 
 .PHONY: check-gcc
 check-gcc: test-functionality.c

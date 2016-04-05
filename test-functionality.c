@@ -10,8 +10,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-unsigned int checks_run = 0;
-unsigned int checks_passed = 0;
+static unsigned int checks_run = 0;
+static unsigned int checks_passed = 0;
 
 #define check_equal(bits,modifier,actual,expected) \
     do { \
@@ -22,8 +22,8 @@ unsigned int checks_passed = 0;
             sizeof(actual) <= sizeof(unsigned long) ? 1 : 1]; \
         (void)(check_actual_fits*)(void*)0; /* "unused typedef" warning */ \
         ++checks_run; \
-        actual_v = actual;  \
-        expected_v = expected; \
+        actual_v = (unsigned long)(actual);  \
+        expected_v = (unsigned long)(expected); \
         passed = actual_v == expected_v; \
         if (!passed) { \
             printf("#%d, %d bits: %s\n", \
@@ -40,7 +40,7 @@ unsigned int checks_passed = 0;
     } while (0)
 
 #define define_test(bits,test_val,hexits) \
-void test_##bits() { \
+static void test_##bits() { \
     union test_union { \
         uint##bits##_t as_uint; \
         unsigned char as_uchars[(bits)/8]; \
@@ -52,7 +52,7 @@ void test_##bits() { \
     typedef char check_hexit_and_bit_count[(bits)==(hexits*4) ? 1 : -1]; \
     (void)(check_hexit_and_bit_count*)(void*)0; /* "unused typedef" warning */ \
     \
-    v.as_uint = test_val; \
+    v.as_uint = (uint##bits##_t)test_val; \
     v_as_le.as_uint = pe_htole##bits(v.as_uint); \
     v_as_be.as_uint = pe_htobe##bits(v.as_uint); \
     /* Are little and big endian actually correct? */ \
@@ -65,15 +65,15 @@ void test_##bits() { \
     check_equal(bits,"0" #hexits,pe_be##bits##toh(v_as_be.as_uint),v.as_uint); \
 }
 
-define_test(16,0x0102L,4)
+define_test(16,0x0102UL,4)
 /* 4 + 2 tests */
 
-define_test(32,0x01020304L,8)
+define_test(32,0x01020304UL,8)
 /* 8 + 2 tests */
 
 #ifndef PORTABLE_ENDIAN_NO_UINT64
 /* All other uints are guaranteed to exist for this test. */
-define_test(64,0x0102030405060708L,16)
+define_test(64,0x0102030405060708UL,16)
 /* 16 + 2 tests */
 #endif
 
