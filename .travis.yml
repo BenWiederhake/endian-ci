@@ -1,7 +1,14 @@
 language: c
-# Select Trusty Tahr.
-sudo: required
-dist: trusty
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      dist: trusty
+      env: OS_CODENAME="Trusty Tahr"
+    - os: linux
+      sudo: false
+      env: OS_CODENAME="Precise Pangoblin"
 git:
   submodules: true
   # TODO: When this repo has many commits, this might speed things up:
