@@ -1,0 +1,20 @@
+stages:
+  - build
+
+build_project:
+  stage: build
+  script:
+    - make
+  tags:
+    - make
+    - c
+    - sh
+    - freebsd
+
+## How-to install on FreeBSD (sshd highly recommended):
+# pkg install wget security/ca_root_nss gcc git
+# wget -O /usr/local/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-freebsd-amd64
+## wget -O /usr/local/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-freebsd-386
+# chmod +x /usr/local/bin/gitlab-ci-multi-runner
+# /usr/local/bin/gitlab-ci-multi-runner register # Needs the token from the website
+# /usr/local/bin/gitlab-ci-multi-runner --debug --log-level debug run > & runner.log &
