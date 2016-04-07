@@ -6,7 +6,7 @@ build_project:
   script:
     - git submodule sync # In case .gitmodules changed and we're in 'fetch' mode
     - git submodule update --init --recursive
-    - make
+    - make -k
   tags:
     - make
     - c
