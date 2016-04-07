@@ -20,16 +20,11 @@ check-clang: test-functionality.c
 	   echo "    override with 'CLANG=<your-clang>')" && \
 	   exit 1; }
 #--
-	@rm -f bin/test-functionality
-	${CLANG} -std=c89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
-	    -o bin/test-functionality test-functionality.c
-	./bin/test-functionality
-#--
 #	C89 does not define the keyword "inline".  So for C89,
-#	one can't test without P_E_FORCE_INLINE re-defined properly.
+#	one can't use that keyword.
 #--
 	@rm -f bin/test-functionality
-	${CLANG} -std=gnu89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	${CLANG} -std=c89 ${CLANG_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -37,7 +32,12 @@ check-clang: test-functionality.c
 #	but clang doesn't accept it anyway.
 #--
 	@rm -f bin/test-functionality
-	${CLANG} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	${CLANG} -std=gnu89 ${CLANG_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
+	@rm -f bin/test-functionality
+	${CLANG} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${CLANG_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -47,7 +47,7 @@ check-clang: test-functionality.c
 	./bin/test-functionality
 #--
 	@rm -f bin/test-functionality
-	${CLANG} -std=gnu99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	${CLANG} -std=gnu99 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${CLANG_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -57,7 +57,7 @@ check-clang: test-functionality.c
 	./bin/test-functionality
 #--
 	@rm -f bin/test-functionality
-	${CLANG} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${CLANG_OPTS} \
+	${CLANG} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${CLANG_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -73,20 +73,20 @@ check-gcc: test-functionality.c
 	   echo "    override with 'GCC=<your-gcc>')" && \
 	   exit 1; }
 #--
-	@rm -f bin/test-functionality
-	${GCC} -std=c89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
-	    -o bin/test-functionality test-functionality.c
-	./bin/test-functionality
-#--
 #	C89 does not define the keyword "inline".  So for C89,
-#	one can't test without P_E_FORCE_INLINE re-defined properly.
+#	one can't use that keyword.
 #--
 	@rm -f bin/test-functionality
-	${GCC} -std=gnu89 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+	${GCC} -std=c89 ${GCC_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
 #	Funny enough, gnu89 *does* include the 'inline' keyword.
+	@rm -f bin/test-functionality
+	${GCC} -std=gnu89 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${GCC_OPTS} \
+	    -o bin/test-functionality test-functionality.c
+	./bin/test-functionality
+#--
 	@rm -f bin/test-functionality
 	@echo ${GCC} -std=gnu89 ${GCC_OPTS} \
 	    -o bin/test-functionality test-functionality.c
@@ -100,7 +100,7 @@ check-gcc: test-functionality.c
 	fi \
 #--
 	@rm -f bin/test-functionality
-	${GCC} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+	${GCC} -std=c99 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${GCC_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -110,7 +110,7 @@ check-gcc: test-functionality.c
 	./bin/test-functionality
 #--
 	@rm -f bin/test-functionality
-	${GCC} -std=gnu99 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+	${GCC} -std=gnu99 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${GCC_OPTS} \
 	    -o bin/test-functionality test-functionality.c
 	./bin/test-functionality
 #--
@@ -120,11 +120,11 @@ check-gcc: test-functionality.c
 	./bin/test-functionality
 #--
 	@rm -f bin/test-functionality
-	@echo ${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+	@echo ${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${GCC_OPTS} \
 		-o bin/test-functionality test-functionality.c
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>/dev/null; \
 	then \
-		${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static" ${GCC_OPTS} \
+		${GCC} -std=c11 -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" ${GCC_OPTS} \
 			-o bin/test-functionality test-functionality.c; \
 		./bin/test-functionality; \
 	else \
