@@ -1,0 +1,21 @@
+	noflags	inline	declhere	declext
+clang-c89-allint	OK	FAIL: C89	OK	OK
+clang-c89-noint64	OK	FAIL: C89	OK	OK
+clang-gnu89-allint	OK	FAIL: C89*	OK	OK
+clang-gnu89-noint64	OK	FAIL: C89*	OK	OK
+clang-c99-allint	OK	OK	OK	OK
+clang-c99-noint64	OK	OK	OK	OK
+clang-gnu99-allint	OK	OK	OK	OK
+clang-gnu99-noint64	OK	OK	OK	OK
+clang-c11-allint	OK	OK	OK	OK
+clang-c11-noint64	OK	OK	OK	OK
+gcc-c89-allint	OK	FAIL: C89	OK	OK
+gcc-c89-noint64	OK	FAIL: C89	OK	OK
+gcc-gnu89-allint	OK	OK**	OK	OK
+gcc-gnu89-noint64	OK	OK**	OK	OK
+gcc-c99-allint	OK	OK	OK	OK
+gcc-c99-noint64	OK	OK	OK	OK
+gcc-gnu99-allint	OK	OK	OK	OK
+gcc-gnu99-noint64	OK	OK	OK	OK
+gcc-c11-allint	OK (C11)	OK (C11)	OK (C11)	OK (C11)
+gcc-c11-noint64	OK (C11)	OK (C11)	OK (C11)	OK (C11)

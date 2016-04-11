@@ -1,0 +1,205 @@
+#!/usr/bin/env python2
+# This file is part of endian-ci, a simple sanity check of portable-endian.h
+# Copyright 2016 Ben Wiederhake
+# License: MIT, see LICENSE
+
+# Please note that you only need to run this file if you changed it.
+# Thus, your test system does *NOT* need to support Python.
+
+from collections import OrderedDict
+from itertools import product
+
+
+def ordered(d):
+    # https://docs.python.org/2/library/collections.html#collections.OrderedDict
+    # Why doesn't this exist as a standard function or smething?  Sigh.
+    return OrderedDict(sorted(d.items(), key=lambda t: t[0]))
+
+
+compilers = ordered({
+    'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
+    'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g'})
+languages = ordered({
+    l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
+integers = ordered({
+    'allint': '',
+    'noint64': '-DPORTABLE_ENDIAN_NO_UINT_64_T'})
+modes = ordered({
+    'noflags': '',
+    'inline': '-DPORTABLE_ENDIAN_FORCE_INLINE="static inline"',
+    'defhere': '-DPORTABLE_ENDIAN_FORCE_INLINE=',
+    'defext': '-DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY'})
+all_combos = list(product(compilers, languages, integers, modes))
+# FIXME: rename to all_rows
+
+all_bins = ['bin/%s-%s-%s-%s' % row for row in all_combos]
+
+
+def obj_of(row, name, check=True):
+    obj = 'obj/' + name + "_" + '-'.join(row) + ".o"
+    if check and obj not in all_objs:
+        print "Unknown object: " + obj
+        assert False
+    return obj
+
+
+all_objs = {obj_of(row, 'test', False) for row in all_combos}.union(
+                {obj_of((c,l,i,'defhere'), 'lib', False) \
+                    for (c,l,i) in product(compilers, languages, integers)})
+
+
+def body_compile(row, src, obj):
+    c, l, i, m = row
+    return " ".join([compilers[c], languages[l], integers[i],
+                     modes[m], '-c -o', obj, src])
+
+
+def body_link(row, objs):
+    return " ".join([compilers[row[0]], '-o', 'bin/' + '-'.join(row)] + objs)
+
+
+def gen_rule_head(row):
+    c, l, i, m = row
+    head_format = '''
+bin/%s-%s-%s-%s: test-functionality.c%s \\
+\t\tportable-endian/portable-endian.h'''
+    print head_format % \
+        (c, l, i, m, ' as-static-lib.c' if m == 'defext' else '')
+
+
+def base_body(row, joiner):
+    c, l, i, m = row
+    cmds = []
+    objs = []
+    if (m == 'defext'):
+        obj = obj_of((c, l, i, 'defhere'), 'lib')
+        cmd = body_compile((c, l, i, 'defhere'), 'as-static-lib.c', obj)
+        objs.append(obj)
+        cmds.append(cmd)
+    test_obj = obj_of(row, 'test')
+    objs.append(test_obj)
+    cmds += [body_compile(row, 'test-functionality.c', test_obj)]
+    cmds += [body_link(row, objs)]
+    return joiner.join(cmds)
+
+
+def base_body_success(row, joiner):
+    return joiner.join([base_body(row, joiner),
+                        # Otherwise, imagine the line " => fail (BAD)"
+                        'echo " => success (GOOD, matches documentation)"'])
+
+
+def gen_test_success(row):
+    print '\t@' + base_body_success(row, '\n\t@')
+
+
+def base_body_fail(row, indent):
+    fmt = ('\n' + indent).join([
+        'if \\',
+        '\t%s > /dev/null 2>&1 ; \\',
+        'then \\',
+        '\techo " => success (BAD, doesn\'t match documentation!)" ; \\',
+        '\texit 1 ; \\',
+        'else \\',
+        '\techo " => fail (GOOD, matches documentation)" ; \\',
+        'fi'])
+    joiner = '''> /dev/null 2>&1 && \\
+%s\t''' % indent
+    return fmt % base_body(row, joiner)
+
+
+def gen_test_fail(row):
+    print '\t@' + base_body_fail(row, '\t')
+
+
+def gen_test_maybe(row, test):
+    fmt = \
+'''\t@if %s ; \\
+\tthen \\
+\t\t%s ; \\
+\telse \\
+\t\t%s ; \\
+\tfi'''
+    print fmt % (test,
+                 base_body_success(row, ' && \\\n\t\t'),
+                 base_body_fail(row, '\t\t'))
+
+
+def gen_rule_body(row):
+    c, l, i, m = row
+    if l == 'c89' and m == 'inline':
+        # 'inline' is not a keyword in C89:
+        return gen_test_fail(row)
+    if l == 'gnu89' and m == 'inline':
+        if c == 'clang':
+            # clang thinks that 'inline' isn't a keyword in gnu89
+            return gen_test_fail(row)
+        if c == 'gcc':
+            # On Apple, both binaries are actually clang
+            test = "! ${GCC} --version | grep -qc '^Apple.*clang'"
+            return gen_test_maybe(row, test)
+        assert False # You failed to synchronize stuff.
+    if l == 'c11' and c == 'gcc':
+        # Older versions of gcc don't support C11
+        test = "${GCC} -std=c11 --target-help >/dev/null 2>&1"
+        return gen_test_maybe(row, test)
+    gen_test_success(row)
+
+
+def gen_rule(row):
+    gen_rule_head(row)
+    print '\t@echo "Building bin/%s ..."' % "-".join(row)
+    gen_rule_body(row)
+
+
+def gen_all_rules():
+    for row in all_combos:
+        gen_rule(row)
+
+
+def gen_makefile():
+    blinding = "OGEN" # Make sure this file doesn't say AUTOG--ENERATED
+    all_bins_str = " ".join(all_bins)
+    print \
+'''# This file is part of endian-ci, a simple sanity check of portable-endian.h
+# DO NOT MODIFY!  THIS FILE IS AUT%sERATED FROM autogen.py!
+# Copyright 2016 Ben Wiederhake
+# License: MIT, see LICENSE
+
+GCC         ?= gcc
+CLANG       ?= clang
+
+all: run-all
+
+.PHONY: gen_makefile
+gen_makefile: autogen
+\t@echo "Overwriting Makefile by explicit request."
+\t@echo "I hope you know what you're doing!"
+\t./autogen > Makefile
+
+.PHONY: build-all
+build-all: %s
+
+.PHONY: run-all
+run-all: build-all
+\t@for i in %s; \\
+\tdo \\
+\t\tif test -x $$i ; \\
+\t\tthen \\
+\t\t\techo "Running test $$i:" ; \\
+\t\t\t$$i || exit 1 ; \\
+\t\telse \\
+\t\t\techo "Running test $$i: SKIPPED, didn't build" ; \\
+\t\tfi \\
+\tdone
+
+.PHONY: clean
+clean:
+\t@echo 'rm -f $${ALL_BINS} $${ALL_OBJS}'
+\t@rm -f %s %s''' % \
+        (blinding, all_bins_str, all_bins_str, all_bins_str, " ".join(all_objs))
+    gen_all_rules()
+
+
+if __name__ == '__main__':
+    gen_makefile()
