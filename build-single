@@ -1,0 +1,162 @@
+#!/bin/sh
+# This file is part of endian-ci, a simple sanity check of portable-endian.h
+# Copyright 2016 Ben Wiederhake
+# License: MIT, see LICENSE
+
+set -eu
+
+
+# ---------------------
+# Very rough input validation
+# Note that "set -u" will catch most unintentional errors in the input.
+
+if [ $# -ne 4 ]
+then
+    echo "Usage: $0 <compiler> <language> <integer-support> <mode>"
+    exit 1
+fi
+
+PART_C="$1"
+PART_L="$2"
+PART_I="$3"
+PART_M="$4"
+echo "Building C=${PART_C}, L=${PART_L}, I=${PART_I}, M=${PART_M} ..."
+
+
+# ---------------------
+# Dial options
+# KEEP THESE IN SYNC WITH Makefile's COMBOS_* VARIABLES!
+
+OPTS_C=""
+case "$PART_C" in
+    clang)
+        OPTS_C="${CLANG} -Weverything -Werror -pedantic -O2 -g"
+        ;;
+    gcc)
+        OPTS_C="${GCC} -Wall -Wextra -Werror -pedantic -O2 -g"
+        ;;
+    *)
+        echo "Unknown compiler; update Makefile and/or build-single"
+        exit 1
+        ;;
+esac
+
+OPTS_L=""
+case "$PART_L" in
+    c89)
+        OPTS_L="-std=c89"
+        ;;
+    c99)
+        OPTS_L="-std=c99"
+        ;;
+    gnu89)
+        OPTS_L="-std=gnu89"
+        ;;
+    gnu99)
+        OPTS_L="-std=gnu99"
+        ;;
+    *)
+        echo "Unknown language; update Makefile and/or build-single"
+        exit 1
+        ;;
+esac
+
+OPTS_I=""
+case "$PART_I" in
+    allint)
+        ;;
+    noint64)
+        OPTS_I="-DPORTABLE_ENDIAN_NO_UINT_64_T"
+        ;;
+    *)
+        echo "Unknown integer support; update Makefile and/or build-single"
+        exit 1
+        ;;
+esac
+
+OPTS_M=""
+case "$PART_M" in
+    noflags)
+        ;;
+    inline)
+        OPTS_M="-DPORTABLE_ENDIAN_FORCE_INLINE=\"static inline\""
+        ;;
+    declhere)
+        OPTS_M="-DPORTABLE_ENDIAN_FORCE_INLINE="
+        ;;
+    declext)
+        OPTS_M="-DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY"
+        ;;
+    *)
+        echo "Unknown mode; update Makefile and/or build-single"
+        exit 1
+        ;;
+esac
+
+
+# ---------------------
+# Compute whether we expect the build to succeed or not
+
+EXPECT="SUCCESS"
+
+# C11 but no C11-compiler?
+if [ "x${EXPECT}" = "xSUCCESS" -a "gcc" = "${PART_C}" -a "c11" = "${PART_L}" ]
+then
+    if ${GCC} -std=c11 --target-help >/dev/null 2>/dev/null
+    then :
+    else
+        EXPECT="FAIL: Old versions of gcc don't support C11"
+    fi
+fi
+
+# C89 but inline?
+if [ "x${EXPECT}" = "xSUCCESS" -a "c89" = "${PART_L}" \
+     -a "inline" = "${PART_M}" ]
+then
+    EXPECT="FAIL: Can't use 'inline' in C89" ;
+fi
+
+# *Effectively* C89 but inline?
+if [ "x${EXPECT}" = "xSUCCESS" -a "gnu89" = "${PART_L}" \
+     -a "inline" = "${PART_M}" -a "clang" = "${PART_C}" ] \
+   && ${GCC} --version | grep -qc '^Apple.*clang'
+then
+    EXPECT="FAIL: Clang thinks 'inline' isn't part of gnu89"
+fi
+
+echo "  Expecting ${EXPECT}"
+
+
+# ---------------------
+# Code that builds the executable -- or at least attempts it
+
+RAWNAME="${PART_C}-${PART_L}-${PART_I}-${PART_M}"
+OBJNAME="obj/${RAWNAME}.o"
+BINNAME="bin/${RAWNAME}"
+
+ADDITIONAL_OBJ=""
+if [ "xdeclext" = "x${PART_M}" ]
+then
+    ADDITIONAL_OBJ="obj/pe_${PART_C}-${PART_L}-${PART_I}.o"
+    ./show-args.py ${OPTS_C} ${OPTS_L} ${OPTS_I} -DPORTABLE_ENDIAN_FORCE_INLINE= \
+        -c -o $ADDITIONAL_OBJ as-static-lib.c
+fi
+./show-args.py ${OPTS_C} ${OPTS_L} ${OPTS_I} ${OPTS_M} \
+    -c -o ${OBJNAME}
+./show-args.py ${OPTS_C} -o ${BINNAME} ${OBJNAME} ${ADDITIONAL_OBJ}
+
+
+
+#ADDITIONAL_OBJ=""
+#if [ "xdeclext" = "x${PART_M}" ]
+#then
+#    ${DIAL_C_${PART_C}} ${DIAL_L_${PART_L}} ${DIAL_I_${PART_I}} \
+#        ${DIAL_M_declhere} -c -o obj/pe_${PART_C}-${PART_L}-${PART_I}.o \
+#        as-static-lib.c && \
+#    ADDITIONAL_OBJ="obj/pe_${PART_C}-${PART_L}-${PART_I}.o" ; \
+#fi && \
+#
+#
+#	${DIAL_C_${PART_C}} ${DIAL_L_${PART_L}} ${DIAL_I_${PART_I}} \
+#		${DIAL_M_${PART_M}} -c -o ${OBJNAME} $< && \
+#	${DIAL_C_${PART_C}} -o $@ ${OBJNAME} $$ADDITIONAL_OBJ
