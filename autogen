@@ -26,9 +26,9 @@ integers = ordered({
     'noint64': '-DPORTABLE_ENDIAN_NO_UINT_64_T'})
 modes = ordered({
     'noflags': '',
-    'inline': '-DPORTABLE_ENDIAN_FORCE_INLINE="static inline"',
-    'defhere': '-DPORTABLE_ENDIAN_FORCE_INLINE=',
-    'defext': '-DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY'})
+    'inline': '-DPORTABLE_ENDIAN_MODIFIERS="static inline"',
+    'defhere': '-DPORTABLE_ENDIAN_MODIFIERS=',
+    'defext': '-DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY'})
 all_combos = list(product(compilers, languages, integers, modes))
 # FIXME: rename to all_rows
 

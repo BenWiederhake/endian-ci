@@ -38,22 +38,22 @@ clean:
 bin/clang-c11-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-allint-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c11-allint-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c11-allint-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c11-allint-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c11-allint-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-allint-defext obj/lib_clang-c11-allint-defhere.o obj/test_clang-c11-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c11-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-allint-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c11-allint-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c11-allint-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-allint-defhere obj/test_clang-c11-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c11-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-allint-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c11-allint-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c11-allint-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-allint-inline obj/test_clang-c11-allint-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -67,22 +67,22 @@ bin/clang-c11-allint-noflags: test-functionality.c \
 bin/clang-c11-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-noint64-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c11-noint64-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c11-noint64-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c11-noint64-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c11-noint64-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-noint64-defext obj/lib_clang-c11-noint64-defhere.o obj/test_clang-c11-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c11-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-noint64-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c11-noint64-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c11-noint64-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-noint64-defhere obj/test_clang-c11-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c11-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c11-noint64-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c11-noint64-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c11-noint64-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c11-noint64-inline obj/test_clang-c11-noint64-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -96,15 +96,15 @@ bin/clang-c11-noint64-noflags: test-functionality.c \
 bin/clang-c89-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-allint-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c89-allint-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c89-allint-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c89-allint-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c89-allint-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-allint-defext obj/lib_clang-c89-allint-defhere.o obj/test_clang-c89-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c89-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-allint-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c89-allint-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c89-allint-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-allint-defhere obj/test_clang-c89-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -112,7 +112,7 @@ bin/clang-c89-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-allint-inline ..."
 	@if \
-		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-allint-inline obj/test_clang-c89-allint-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -131,15 +131,15 @@ bin/clang-c89-allint-noflags: test-functionality.c \
 bin/clang-c89-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-noint64-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c89-noint64-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c89-noint64-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c89-noint64-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c89-noint64-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-noint64-defext obj/lib_clang-c89-noint64-defhere.o obj/test_clang-c89-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c89-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-noint64-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c89-noint64-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c89-noint64-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-noint64-defhere obj/test_clang-c89-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -147,7 +147,7 @@ bin/clang-c89-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c89-noint64-inline ..."
 	@if \
-		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c89-noint64-inline obj/test_clang-c89-noint64-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -166,22 +166,22 @@ bin/clang-c89-noint64-noflags: test-functionality.c \
 bin/clang-c99-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-allint-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c99-allint-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c99-allint-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c99-allint-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c99-allint-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-allint-defext obj/lib_clang-c99-allint-defhere.o obj/test_clang-c99-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c99-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-allint-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c99-allint-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c99-allint-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-allint-defhere obj/test_clang-c99-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c99-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-allint-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c99-allint-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c99-allint-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-allint-inline obj/test_clang-c99-allint-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -195,22 +195,22 @@ bin/clang-c99-allint-noflags: test-functionality.c \
 bin/clang-c99-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-noint64-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-c99-noint64-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c99-noint64-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-c99-noint64-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-c99-noint64-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-noint64-defext obj/lib_clang-c99-noint64-defhere.o obj/test_clang-c99-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c99-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-noint64-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-c99-noint64-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-c99-noint64-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-noint64-defhere obj/test_clang-c99-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-c99-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-c99-noint64-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-c99-noint64-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-c99-noint64-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-c99-noint64-inline obj/test_clang-c99-noint64-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -224,15 +224,15 @@ bin/clang-c99-noint64-noflags: test-functionality.c \
 bin/clang-gnu89-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-allint-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-gnu89-allint-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu89-allint-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-gnu89-allint-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu89-allint-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-allint-defext obj/lib_clang-gnu89-allint-defhere.o obj/test_clang-gnu89-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu89-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-allint-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-gnu89-allint-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-gnu89-allint-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-allint-defhere obj/test_clang-gnu89-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -240,7 +240,7 @@ bin/clang-gnu89-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-allint-inline ..."
 	@if \
-		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-gnu89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-gnu89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-allint-inline obj/test_clang-gnu89-allint-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -259,15 +259,15 @@ bin/clang-gnu89-allint-noflags: test-functionality.c \
 bin/clang-gnu89-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-noint64-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-gnu89-noint64-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu89-noint64-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-gnu89-noint64-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu89-noint64-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-noint64-defext obj/lib_clang-gnu89-noint64-defhere.o obj/test_clang-gnu89-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu89-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-noint64-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-gnu89-noint64-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-gnu89-noint64-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-noint64-defhere obj/test_clang-gnu89-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -275,7 +275,7 @@ bin/clang-gnu89-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu89-noint64-inline ..."
 	@if \
-		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-gnu89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-gnu89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu89-noint64-inline obj/test_clang-gnu89-noint64-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -294,22 +294,22 @@ bin/clang-gnu89-noint64-noflags: test-functionality.c \
 bin/clang-gnu99-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-allint-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-gnu99-allint-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu99-allint-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-gnu99-allint-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu99-allint-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-allint-defext obj/lib_clang-gnu99-allint-defhere.o obj/test_clang-gnu99-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu99-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-allint-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-gnu99-allint-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-gnu99-allint-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-allint-defhere obj/test_clang-gnu99-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu99-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-allint-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-gnu99-allint-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-gnu99-allint-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-allint-inline obj/test_clang-gnu99-allint-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -323,22 +323,22 @@ bin/clang-gnu99-allint-noflags: test-functionality.c \
 bin/clang-gnu99-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-noint64-defext ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_clang-gnu99-noint64-defhere.o as-static-lib.c
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu99-noint64-defext.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_clang-gnu99-noint64-defhere.o as-static-lib.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_clang-gnu99-noint64-defext.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-noint64-defext obj/lib_clang-gnu99-noint64-defhere.o obj/test_clang-gnu99-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu99-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-noint64-defhere ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_clang-gnu99-noint64-defhere.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_clang-gnu99-noint64-defhere.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-noint64-defhere obj/test_clang-gnu99-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/clang-gnu99-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/clang-gnu99-noint64-inline ..."
-	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_clang-gnu99-noint64-inline.o test-functionality.c
+	@${CLANG} -Weverything -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_clang-gnu99-noint64-inline.o test-functionality.c
 	@${CLANG} -Weverything -Werror -pedantic -O2 -g -o bin/clang-gnu99-noint64-inline obj/test_clang-gnu99-noint64-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -354,14 +354,14 @@ bin/gcc-c11-allint-defext: test-functionality.c as-static-lib.c \
 	@echo "Building bin/gcc-c11-allint-defext ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c11-allint-defhere.o as-static-lib.c && \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-allint-defext.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-allint-defhere.o as-static-lib.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-allint-defext.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-defext obj/lib_gcc-c11-allint-defhere.o obj/test_gcc-c11-allint-defext.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c11-allint-defhere.o as-static-lib.c> /dev/null 2>&1 && \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-allint-defext.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-allint-defhere.o as-static-lib.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-allint-defext.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-defext obj/lib_gcc-c11-allint-defhere.o obj/test_gcc-c11-allint-defext.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -376,12 +376,12 @@ bin/gcc-c11-allint-defhere: test-functionality.c \
 	@echo "Building bin/gcc-c11-allint-defhere ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c11-allint-defhere.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-allint-defhere.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-defhere obj/test_gcc-c11-allint-defhere.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c11-allint-defhere.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-allint-defhere.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-defhere obj/test_gcc-c11-allint-defhere.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -396,12 +396,12 @@ bin/gcc-c11-allint-inline: test-functionality.c \
 	@echo "Building bin/gcc-c11-allint-inline ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c11-allint-inline.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-allint-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-inline obj/test_gcc-c11-allint-inline.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c11-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-inline obj/test_gcc-c11-allint-inline.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -436,14 +436,14 @@ bin/gcc-c11-noint64-defext: test-functionality.c as-static-lib.c \
 	@echo "Building bin/gcc-c11-noint64-defext ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c11-noint64-defhere.o as-static-lib.c && \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-noint64-defext.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-noint64-defhere.o as-static-lib.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-noint64-defext.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-defext obj/lib_gcc-c11-noint64-defhere.o obj/test_gcc-c11-noint64-defext.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c11-noint64-defhere.o as-static-lib.c> /dev/null 2>&1 && \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-noint64-defext.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-noint64-defhere.o as-static-lib.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-noint64-defext.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-defext obj/lib_gcc-c11-noint64-defhere.o obj/test_gcc-c11-noint64-defext.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -458,12 +458,12 @@ bin/gcc-c11-noint64-defhere: test-functionality.c \
 	@echo "Building bin/gcc-c11-noint64-defhere ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c11-noint64-defhere.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-noint64-defhere.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-defhere obj/test_gcc-c11-noint64-defhere.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c11-noint64-defhere.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-noint64-defhere.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-defhere obj/test_gcc-c11-noint64-defhere.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -478,12 +478,12 @@ bin/gcc-c11-noint64-inline: test-functionality.c \
 	@echo "Building bin/gcc-c11-noint64-inline ..."
 	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c11-noint64-inline.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-noint64-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-inline obj/test_gcc-c11-noint64-inline.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c11-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-inline obj/test_gcc-c11-noint64-inline.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -516,15 +516,15 @@ bin/gcc-c11-noint64-noflags: test-functionality.c \
 bin/gcc-c89-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-allint-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c89-allint-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c89-allint-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c89-allint-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c89-allint-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-allint-defext obj/lib_gcc-c89-allint-defhere.o obj/test_gcc-c89-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c89-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-allint-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c89-allint-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c89-allint-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-allint-defhere obj/test_gcc-c89-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -532,7 +532,7 @@ bin/gcc-c89-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-allint-inline ..."
 	@if \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-allint-inline obj/test_gcc-c89-allint-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -551,15 +551,15 @@ bin/gcc-c89-allint-noflags: test-functionality.c \
 bin/gcc-c89-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-noint64-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c89-noint64-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c89-noint64-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c89-noint64-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c89-noint64-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-noint64-defext obj/lib_gcc-c89-noint64-defhere.o obj/test_gcc-c89-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c89-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-noint64-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c89-noint64-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c89-noint64-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-noint64-defhere obj/test_gcc-c89-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -567,7 +567,7 @@ bin/gcc-c89-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c89-noint64-inline ..."
 	@if \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c89-noint64-inline obj/test_gcc-c89-noint64-inline.o > /dev/null 2>&1 ; \
 	then \
 		echo " => success (BAD, doesn't match documentation!)" ; \
@@ -586,22 +586,22 @@ bin/gcc-c89-noint64-noflags: test-functionality.c \
 bin/gcc-c99-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-allint-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c99-allint-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c99-allint-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c99-allint-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c99-allint-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-allint-defext obj/lib_gcc-c99-allint-defhere.o obj/test_gcc-c99-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c99-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-allint-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c99-allint-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c99-allint-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-allint-defhere obj/test_gcc-c99-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c99-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-allint-inline ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c99-allint-inline.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c99-allint-inline.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-allint-inline obj/test_gcc-c99-allint-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -615,22 +615,22 @@ bin/gcc-c99-allint-noflags: test-functionality.c \
 bin/gcc-c99-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-noint64-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-c99-noint64-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c99-noint64-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c99-noint64-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c99-noint64-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-noint64-defext obj/lib_gcc-c99-noint64-defhere.o obj/test_gcc-c99-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c99-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-noint64-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-c99-noint64-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c99-noint64-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-noint64-defhere obj/test_gcc-c99-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-c99-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c99-noint64-inline ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-c99-noint64-inline.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c99-noint64-inline.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c99-noint64-inline obj/test_gcc-c99-noint64-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -644,15 +644,15 @@ bin/gcc-c99-noint64-noflags: test-functionality.c \
 bin/gcc-gnu89-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu89-allint-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-gnu89-allint-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu89-allint-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-gnu89-allint-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu89-allint-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-allint-defext obj/lib_gcc-gnu89-allint-defhere.o obj/test_gcc-gnu89-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu89-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu89-allint-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-gnu89-allint-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-gnu89-allint-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-allint-defhere obj/test_gcc-gnu89-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -661,12 +661,12 @@ bin/gcc-gnu89-allint-inline: test-functionality.c \
 	@echo "Building bin/gcc-gnu89-allint-inline ..."
 	@if ! ${GCC} --version | grep -qc '^Apple.*clang' ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu89-allint-inline.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu89-allint-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-allint-inline obj/test_gcc-gnu89-allint-inline.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu89-allint-inline.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-allint-inline obj/test_gcc-gnu89-allint-inline.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -686,15 +686,15 @@ bin/gcc-gnu89-allint-noflags: test-functionality.c \
 bin/gcc-gnu89-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu89-noint64-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-gnu89-noint64-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu89-noint64-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-gnu89-noint64-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu89-noint64-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-noint64-defext obj/lib_gcc-gnu89-noint64-defhere.o obj/test_gcc-gnu89-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu89-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu89-noint64-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-gnu89-noint64-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-gnu89-noint64-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-noint64-defhere obj/test_gcc-gnu89-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -703,12 +703,12 @@ bin/gcc-gnu89-noint64-inline: test-functionality.c \
 	@echo "Building bin/gcc-gnu89-noint64-inline ..."
 	@if ! ${GCC} --version | grep -qc '^Apple.*clang' ; \
 	then \
-		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu89-noint64-inline.o test-functionality.c && \
+		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu89-noint64-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-noint64-inline obj/test_gcc-gnu89-noint64-inline.o && \
 		echo " => success (GOOD, matches documentation)" ; \
 	else \
 		if \
-			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
+			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu89 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu89-noint64-inline.o test-functionality.c> /dev/null 2>&1 && \
 			${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu89-noint64-inline obj/test_gcc-gnu89-noint64-inline.o > /dev/null 2>&1 ; \
 		then \
 			echo " => success (BAD, doesn't match documentation!)" ; \
@@ -728,22 +728,22 @@ bin/gcc-gnu89-noint64-noflags: test-functionality.c \
 bin/gcc-gnu99-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-allint-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-gnu99-allint-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu99-allint-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-gnu99-allint-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu99-allint-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-allint-defext obj/lib_gcc-gnu99-allint-defhere.o obj/test_gcc-gnu99-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu99-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-allint-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-gnu99-allint-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-gnu99-allint-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-allint-defhere obj/test_gcc-gnu99-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu99-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-allint-inline ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu99-allint-inline.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu99-allint-inline.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-allint-inline obj/test_gcc-gnu99-allint-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
@@ -757,22 +757,22 @@ bin/gcc-gnu99-allint-noflags: test-functionality.c \
 bin/gcc-gnu99-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-noint64-defext ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/lib_gcc-gnu99-noint64-defhere.o as-static-lib.c
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu99-noint64-defext.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-gnu99-noint64-defhere.o as-static-lib.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-gnu99-noint64-defext.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-noint64-defext obj/lib_gcc-gnu99-noint64-defhere.o obj/test_gcc-gnu99-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu99-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-noint64-defhere ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE= -c -o obj/test_gcc-gnu99-noint64-defhere.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-gnu99-noint64-defhere.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-noint64-defhere obj/test_gcc-gnu99-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/gcc-gnu99-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-gnu99-noint64-inline ..."
-	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_FORCE_INLINE="static inline" -c -o obj/test_gcc-gnu99-noint64-inline.o test-functionality.c
+	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-gnu99-noint64-inline.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-noint64-inline obj/test_gcc-gnu99-noint64-inline.o
 	@echo " => success (GOOD, matches documentation)"
 
