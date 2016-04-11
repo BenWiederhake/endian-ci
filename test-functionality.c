@@ -71,7 +71,7 @@ define_test(16,0x0102UL,4)
 define_test(32,0x01020304UL,8)
 /* 8 + 2 tests */
 
-#ifndef PORTABLE_ENDIAN_NO_UINT64
+#ifndef PORTABLE_ENDIAN_NO_UINT_64_T
 /* All other uints are guaranteed to exist for this test. */
 define_test(64,0x0102030405060708UL,16)
 /* 16 + 2 tests */
@@ -81,7 +81,7 @@ int main() {
     printf("Begin functionality testing\n");
     test_16();
     test_32();
-#ifndef PORTABLE_ENDIAN_NO_UINT64
+#ifndef PORTABLE_ENDIAN_NO_UINT_64_T
     test_64();
 #endif
     printf("End functionality testing: Ran %d checks (%d successful)\n",
