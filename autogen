@@ -127,6 +127,8 @@ def gen_test_maybe(row, test):
 
 def gen_rule_body(row):
     c, l, i, m = row
+    apple_test = "! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang'"
+    c11_test = "${GCC} -std=c11 --target-help >/dev/null 2>&1 || " + apple_test
     if l == 'c89' and m == 'inline':
         # 'inline' is not a keyword in C89:
         return gen_test_fail(row)
@@ -136,13 +138,11 @@ def gen_rule_body(row):
             return gen_test_fail(row)
         if c == 'gcc':
             # On Apple, both binaries are actually clang
-            test = "! ${GCC} --version | grep -qc '^Apple.*clang'"
-            return gen_test_maybe(row, test)
+            return gen_test_maybe(row, apple_test)
         assert False # You failed to synchronize stuff.
     if l == 'c11' and c == 'gcc':
         # Older versions of gcc don't support C11
-        test = "${GCC} -std=c11 --target-help >/dev/null 2>&1"
-        return gen_test_maybe(row, test)
+        return gen_test_maybe(row, c11_test)
     gen_test_success(row)
 
 
