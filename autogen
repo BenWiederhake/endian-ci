@@ -169,7 +169,7 @@ def gen_makefile():
 GCC         ?= gcc
 CLANG       ?= clang
 
-all: run-all
+all: build-all run-existing
 
 .PHONY: gen_makefile
 gen_makefile: autogen
@@ -180,8 +180,8 @@ gen_makefile: autogen
 .PHONY: build-all
 build-all: %s
 
-.PHONY: run-all
-run-all: build-all
+.PHONY: run-existing
+run-existing:
 \t@for i in %s; \\
 \tdo \\
 \t\tif test -x $$i ; \\
