@@ -40,7 +40,7 @@ static unsigned int checks_passed = 0;
     } while (0)
 
 #define define_test(bits,test_val,hexits) \
-static void test_##bits() { \
+static void test_##bits(void) { \
     typedef char check_uintXt_bit_count[ \
         bits == (sizeof(uint##bits##_t)*8) ? 1 : -1]; \
     union test_union { \
@@ -80,7 +80,7 @@ define_test(64,0x0102030405060708UL,16)
 /* 16 + 2 tests */
 #endif
 
-int main() {
+int main(void) {
     printf("Begin functionality testing\n");
     test_16();
     test_32();
