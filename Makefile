@@ -352,7 +352,7 @@ bin/clang-gnu99-noint64-noflags: test-functionality.c \
 bin/gcc-c11-allint-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-allint-defext ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-allint-defhere.o as-static-lib.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-allint-defext.o test-functionality.c && \
@@ -374,7 +374,7 @@ bin/gcc-c11-allint-defext: test-functionality.c as-static-lib.c \
 bin/gcc-c11-allint-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-allint-defhere ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-allint-defhere.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-defhere obj/test_gcc-c11-allint-defhere.o && \
@@ -394,7 +394,7 @@ bin/gcc-c11-allint-defhere: test-functionality.c \
 bin/gcc-c11-allint-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-allint-inline ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-allint-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-inline obj/test_gcc-c11-allint-inline.o && \
@@ -414,7 +414,7 @@ bin/gcc-c11-allint-inline: test-functionality.c \
 bin/gcc-c11-allint-noflags: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-allint-noflags ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11   -c -o obj/test_gcc-c11-allint-noflags.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-allint-noflags obj/test_gcc-c11-allint-noflags.o && \
@@ -434,7 +434,7 @@ bin/gcc-c11-allint-noflags: test-functionality.c \
 bin/gcc-c11-noint64-defext: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-noint64-defext ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_gcc-c11-noint64-defhere.o as-static-lib.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_gcc-c11-noint64-defext.o test-functionality.c && \
@@ -456,7 +456,7 @@ bin/gcc-c11-noint64-defext: test-functionality.c as-static-lib.c \
 bin/gcc-c11-noint64-defhere: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-noint64-defhere ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_gcc-c11-noint64-defhere.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-defhere obj/test_gcc-c11-noint64-defhere.o && \
@@ -476,7 +476,7 @@ bin/gcc-c11-noint64-defhere: test-functionality.c \
 bin/gcc-c11-noint64-inline: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-noint64-inline ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_gcc-c11-noint64-inline.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-inline obj/test_gcc-c11-noint64-inline.o && \
@@ -496,7 +496,7 @@ bin/gcc-c11-noint64-inline: test-functionality.c \
 bin/gcc-c11-noint64-noflags: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/gcc-c11-noint64-noflags ..."
-	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ! ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
+	@if ${GCC} -std=c11 --target-help >/dev/null 2>&1 || ${GCC} --version 2>/dev/null | grep -qc '^Apple.*clang' ; \
 	then \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=c11 -DPORTABLE_ENDIAN_NO_UINT_64_T  -c -o obj/test_gcc-c11-noint64-noflags.o test-functionality.c && \
 		${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-c11-noint64-noflags obj/test_gcc-c11-noint64-noflags.o && \
