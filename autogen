@@ -193,6 +193,12 @@ run-all: build-all
 \t\tfi \\
 \tdone
 
+portable-endian/portable-endian.h:
+\t@echo "portable-endian/portable-endian.h not found."
+\t@echo "Did you checkout the submodule?  Try this:"
+\t@echo "git submodule update --init"
+\t@exit 1
+
 .PHONY: clean
 clean:
 \t@echo 'rm -f $${ALL_BINS} $${ALL_OBJS}'
