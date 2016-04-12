@@ -17,6 +17,20 @@ automatically generated from `autogen.py`, you also need Python on
 *any* system (not necessarily the system under test). Language major
 version 2, of course.
 
+For the full table of compatibility, see `compatibility.tsv`
+
+Here are all rules to determine what works and what doesn't:
+- Using an old version of gcc that doesn't support `-std=c11`?  Then C11
+  doesn't work (duh).
+- Using a standard that doesn't support the `inline` keyword?  Then
+  setting `PORTABLE_ENDIAN_MODIFIERS` shouldn't contain the "keyword"
+  `inline` (duh).
+- Using `-std=gnu89` and the `inline` keyword?  Then `clang` doesn't work.
+  Please note that Mac OS claims to have "gcc", but that's just a symbolic
+  link to clang, so in this case, "gcc" doesn't work, either.
+- That's all, as far as I can tell.
+
+
 ## Dimensions
 
 This project checks along the following dimenstions:
