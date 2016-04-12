@@ -41,6 +41,8 @@ static unsigned int checks_passed = 0;
 
 #define define_test(bits,test_val,hexits) \
 static void test_##bits() { \
+    typedef char check_uintXt_bit_count[ \
+        bits == (sizeof(uint##bits##_t)*8) ? 1 : -1]; \
     union test_union { \
         uint##bits##_t as_uint; \
         unsigned char as_uchars[(bits)/8]; \
@@ -50,6 +52,7 @@ static void test_##bits() { \
     union test_union v_as_be; \
     int i; \
     typedef char check_hexit_and_bit_count[(bits)==(hexits*4) ? 1 : -1]; \
+    (void)(check_uintXt_bit_count*)(void*)0; /* "unused typedef" warning */ \
     (void)(check_hexit_and_bit_count*)(void*)0; /* "unused typedef" warning */ \
     \
     v.as_uint = (uint##bits##_t)test_val; \
