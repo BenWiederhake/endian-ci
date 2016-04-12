@@ -57,18 +57,17 @@ execution time should be reasonable enough.
 
 ## Cross-platform testing
 
-Coming soon.
-
 With the current split into the targets `build-all` and
 `run-all` (the latter just executes all binaries in `bin/`), it should
 be well possible to cross-compile during `build-all`, copy the
 executable to the target platform, and run them there.  Note that you
-should not try to link them together.
+should not try to link them together, as that would either fail or (at least)
+render all linkage tests moot.
 
 ## Compilers
 
 I'd love to see Pull Requests to test this specifically with XCode and
-MSVC.  Until then, It'll be gcc- and clang-only.
+MSVC.  Until then, it'll be gcc- and clang-only.
 
 ## Python script
 
