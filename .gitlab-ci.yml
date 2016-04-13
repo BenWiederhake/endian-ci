@@ -1,3 +1,7 @@
+# This file is part of endian-ci, a simple sanity check of portable-endian.h
+# Copyright 2016 Ben Wiederhake
+# License: MIT, see LICENSE
+
 stages:
   - build
 

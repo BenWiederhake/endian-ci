@@ -15,6 +15,8 @@ def ordered(d):
     # Why doesn't this exist as a standard function or smething?  Sigh.
     return OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
+# ----------------
+# Options.  Feel free to add your own!  :-)
 
 compilers = ordered({
     'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
@@ -29,11 +31,10 @@ modes = ordered({
     'inline': '-DPORTABLE_ENDIAN_MODIFIERS="static inline"',
     'defhere': '-DPORTABLE_ENDIAN_MODIFIERS=',
     'defext': '-DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY'})
-all_combos = list(product(compilers, languages, integers, modes))
-# FIXME: rename to all_rows
 
-all_bins = ['bin/%s-%s-%s-%s' % row for row in all_combos]
 
+# ----------------
+# String construction (atoms) and globally cached objects
 
 def obj_of(row, name, check=True):
     obj = 'obj/' + name + "_" + '-'.join(row) + ".o"
@@ -43,9 +44,12 @@ def obj_of(row, name, check=True):
     return obj
 
 
-all_objs = {obj_of(row, 'test', False) for row in all_combos}.union(
-                {obj_of((c,l,i,'defhere'), 'lib', False) \
-                    for (c,l,i) in product(compilers, languages, integers)})
+# Order is important, as globals are evaluated as soon as they are read,
+# so 'obj_of' needs to be already defined.
+all_rows = list(product(compilers, languages, integers, modes))
+all_objs = {obj_of(row, 'test', check=False) for row in all_rows}
+all_objs = all_objs.union({obj_of((c, l, i, 'defhere'), 'lib', check=False)
+                           for (c, l, i, _) in all_rows})
 
 
 def body_compile(row, src, obj):
@@ -56,15 +60,6 @@ def body_compile(row, src, obj):
 
 def body_link(row, objs):
     return " ".join([compilers[row[0]], '-o', 'bin/' + '-'.join(row)] + objs)
-
-
-def gen_rule_head(row):
-    c, l, i, m = row
-    head_format = '''
-bin/%s-%s-%s-%s: test-functionality.c%s \\
-\t\tportable-endian/portable-endian.h'''
-    print head_format % \
-        (c, l, i, m, ' as-static-lib.c' if m == 'defext' else '')
 
 
 def base_body(row, joiner):
@@ -83,6 +78,9 @@ def base_body(row, joiner):
     return joiner.join(cmds)
 
 
+# ----------------
+# String construction and output:  successful case
+
 def base_body_success(row, joiner):
     return joiner.join([base_body(row, joiner),
                         # Otherwise, imagine the line " => fail (BAD)"
@@ -92,6 +90,9 @@ def base_body_success(row, joiner):
 def gen_test_success(row):
     print '\t@' + base_body_success(row, '\n\t@')
 
+
+# ----------------
+# String construction and output:  failure case
 
 def base_body_fail(row, indent):
     fmt = ('\n' + indent).join([
@@ -112,6 +113,10 @@ def gen_test_fail(row):
     print '\t@' + base_body_fail(row, '\t')
 
 
+# ----------------
+# Output:  "depends on platform" case
+# Note that there is no stand-alone string construction for this because YAGNI.
+
 def gen_test_maybe(row, test):
     fmt = \
 '''\t@if %s ; \\
@@ -124,6 +129,10 @@ def gen_test_maybe(row, test):
                  base_body_success(row, ' && \\\n\t\t'),
                  base_body_fail(row, '\t\t'))
 
+
+# ----------------
+# Main "compatibility logic".  Return-by-print is evil, but in this case
+# it's the simplest solution, and it works reliable, easy, and fast.
 
 def gen_rule_body(row):
     c, l, i, m = row
@@ -139,12 +148,25 @@ def gen_rule_body(row):
         if c == 'gcc':
             # On Apple, both binaries are actually clang
             return gen_test_maybe(row, "! " + apple_test)
-        assert False # You failed to synchronize stuff.
+        assert False  # You failed to synchronize stuff!
     if l == 'c11' and c == 'gcc':
         # Older versions of gcc don't support C11
         return gen_test_maybe(row, c11_test)
     gen_test_success(row)
 
+
+def gen_rule_head(row):
+    c, l, i, m = row
+    # That line break is intentional.
+    head_format = '''
+bin/%s-%s-%s-%s: test-functionality.c%s \\
+\t\tportable-endian/portable-endian.h'''
+    print head_format % \
+        (c, l, i, m, ' as-static-lib.c' if m == 'defext' else '')
+
+
+# ----------------
+# High-level but boring combination of all previous things.
 
 def gen_rule(row):
     gen_rule_head(row)
@@ -153,13 +175,16 @@ def gen_rule(row):
 
 
 def gen_all_rules():
-    for row in all_combos:
+    for row in all_rows:
         gen_rule(row)
 
 
 def gen_makefile():
-    blinding = "OGEN" # Make sure this file doesn't say AUTOG--ENERATED
+    all_bins = ['bin/%s-%s-%s-%s' % row for row in all_rows]
     all_bins_str = " ".join(all_bins)
+    all_objs_str = " ".join(all_objs)
+    blinding = "OGEN"  # Make sure this file doesn't say AUTOG--ENERATED
+    # Ugly, but not really preventable.
     print \
 '''# This file is part of endian-ci, a simple sanity check of portable-endian.h
 # DO NOT MODIFY!  THIS FILE IS AUT%sERATED FROM autogen.py!
@@ -177,12 +202,15 @@ gen_makefile: autogen
 \t@echo "I hope you know what you're doing!"
 \t./autogen > Makefile.tmp && mv -f Makefile.tmp Makefile
 
+ALL_OBJS := %s
+ALL_BINS := %s
+
 .PHONY: build-all
-build-all: %s
+build-all: ${ALL_BINS}
 
 .PHONY: run-existing
 run-existing:
-\t@for i in %s; \\
+\t@for i in ${ALL_BINS}; \\
 \tdo \\
 \t\tif test -x $$i ; \\
 \t\tthen \\
@@ -202,11 +230,11 @@ portable-endian/portable-endian.h:
 .PHONY: clean
 clean:
 \t@echo 'rm -f $${ALL_BINS} $${ALL_OBJS}'
-\t@rm -f %s %s
+\t@rm -f ${ALL_BINS} ${ALL_OBJS}
 \tls bin
 \tls obj
 \t@echo "End of 'clean'"''' % \
-        (blinding, all_bins_str, all_bins_str, all_bins_str, " ".join(all_objs))
+        (blinding, all_objs_str, all_bins_str)
     gen_all_rules()
 
 
