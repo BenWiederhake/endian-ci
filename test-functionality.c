@@ -26,10 +26,7 @@ static unsigned int checks_passed = 0;
         expected_v = (unsigned long)(expected); \
         passed = actual_v == expected_v; \
         if (!passed) { \
-            printf("#%d, %d bits: %s\n", \
-                checks_run, \
-                bits, \
-                passed ? "PASS" : "FAIL"); \
+            printf("#%u, %d bits: FAIL\n", checks_run, bits); \
             printf("\tExpression:   %s\n", #actual); \
             printf("\tActual:       %" modifier "lx\n", actual_v); \
             printf("\tExpected:     %s\n", #expected); \
@@ -87,7 +84,7 @@ int main(void) {
 #ifndef PORTABLE_ENDIAN_NO_UINT_64_T
     test_64();
 #endif
-    printf("End functionality testing: Ran %d checks (%d successful)\n",
+    printf("End functionality testing: Ran %u checks (%u successful)\n",
            checks_run, checks_passed);
     if (checks_passed != checks_run) {
         printf("=> FAIL, as there are failed checks.\n");
