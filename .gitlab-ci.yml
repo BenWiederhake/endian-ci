@@ -19,7 +19,11 @@ build_project:
 # 'make -k' not only keeps going, it also silently ignores any errors of
 # subtargets.  If you want more verbose error messages on FreeBSD, go fix their
 # broken 'make' first.
-    - env MAKEOBJDIR="83dfd219-a074-4361-9442-b38485644ad1" make
+# WORKAROUND 3:
+# tcc can't find <stdio.h>, I don't know how they achieved that.
+# Discussion: https://lists.freebsd.org/pipermail/freebsd-ports/2016-April/102814.html
+# TODO: Check with "pkg upgrade tcc" if something changed, and try again.
+    - env MAKEOBJDIR="83dfd219-a074-4361-9442-b38485644ad1" make build-gcc-only build-clang-only run-existing
   tags:
     - make
     - c
@@ -27,7 +31,7 @@ build_project:
     - freebsd
 
 ## How-to install on FreeBSD (sshd highly recommended):
-# pkg install wget security/ca_root_nss gcc git
+# pkg install wget security/ca_root_nss gcc git tcc # TODO SEE ABOVE (tcc)
 # wget -O /usr/local/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-freebsd-amd64
 ## wget -O /usr/local/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-freebsd-386
 # chmod +x /usr/local/bin/gitlab-ci-multi-runner

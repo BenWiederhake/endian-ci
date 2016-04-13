@@ -9,14 +9,23 @@ matrix:
     - os: linux
       sudo: required
       dist: trusty
-      env: OS_CODENAME="Trusty Tahr"
+      env: OS_CODENAME="Trusty Tahr" BUILD_TARGETS="build-all"
     - os: linux
       sudo: false
-      env: OS_CODENAME="Precise Pangoblin"
+      env: OS_CODENAME="Precise Pangoblin" BUILD_TARGETS="build-all"
     - os: osx
-      env: OS_CODENAME="OS X 10"
+      env: OS_CODENAME="OS X 10" BUILD_TARGETS="build-gcc-only build-clang-only"
+addons:
+  apt:
+    packages: # Installs in both Ubuntus, but not OS X
+      - tcc
 git:
   submodules: true
   depth: 3
 script:
-  - make -k
+## tcc throws warnings "not supported" but compiles perfectly clean.
+## FIXME: Come up with some architecture that disables "-Werror" for tcc on Mac OS
+#  - if [ "x${OS_CODENAME}" = "xOS X 10" ] ; then brew install tcc ; fi
+#  - make -k
+## So instead, do this:
+  - make -k ${BUILD_TARGETS} run-existing

@@ -19,10 +19,11 @@ def ordered(d):
 
 compilers = ordered({
     'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
-    'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g'})
+    'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g',
+    'tcc': '${TCC} -Wall -Werror -g'})
 languages_gnu = ordered({
     l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
-languages = {'gcc': languages_gnu, 'clang': languages_gnu}
+languages = {'gcc': languages_gnu, 'clang': languages_gnu, 'tcc': {'std': ''}}
 integers = ordered({
     'allint': [],
     'noint64': ['PORTABLE_ENDIAN_NO_UINT_64_T']})
@@ -38,7 +39,7 @@ modes = ordered({
 #     "Just re-use compiler[c] instead."
 flags_unix = {'compile-only': '-c', 'def-macro': '-D', 'compile-out': '-o ',
               'linker': None, 'link-out': '-o '}
-flags = {'clang': flags_unix, 'gcc': flags_unix}
+flags = {'clang': flags_unix, 'gcc': flags_unix, 'tcc': flags_unix}
 
 # This must hold, no matter what your inputs.
 assert all([flags.values()[0].viewkeys() == flags[c].viewkeys()
@@ -223,6 +224,7 @@ def gen_makefile():
 
 GCC         ?= gcc
 CLANG       ?= clang
+TCC         ?= tcc
 
 all: build-all run-existing
 

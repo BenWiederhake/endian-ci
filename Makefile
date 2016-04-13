@@ -5,6 +5,7 @@
 
 GCC         ?= gcc
 CLANG       ?= clang
+TCC         ?= tcc
 
 all: build-all run-existing
 
@@ -14,7 +15,7 @@ gen_makefile: autogen
 	@echo "I hope you know what you're doing!"
 	./autogen > Makefile.tmp && mv -f Makefile.tmp Makefile
 
-ALL_OBJS := obj/test_clang-c11-allint-noflags.o obj/test_gcc-c89-allint-noflags.o obj/test_clang-gnu99-noint64-defext.o obj/test_gcc-c89-noint64-noflags.o obj/test_clang-c11-noint64-inline.o obj/test_clang-gnu89-noint64-noflags.o obj/test_gcc-c89-allint-defext.o obj/test_clang-gnu89-allint-defext.o obj/test_gcc-c89-allint-defhere.o obj/lib_gcc-gnu99-noint64-defhere.o obj/test_gcc-gnu89-noint64-inline.o obj/lib_clang-c11-allint-defhere.o obj/test_gcc-c89-noint64-defext.o obj/test_gcc-gnu89-noint64-defext.o obj/lib_clang-c99-allint-defhere.o obj/test_clang-c11-noint64-defext.o obj/test_clang-gnu99-allint-noflags.o obj/test_gcc-c89-noint64-inline.o obj/lib_clang-gnu99-noint64-defhere.o obj/test_clang-c11-allint-defhere.o obj/test_clang-c99-noint64-defext.o obj/lib_gcc-c99-allint-defhere.o obj/test_gcc-c99-noint64-noflags.o obj/test_clang-c99-allint-noflags.o obj/test_clang-c89-allint-defext.o obj/test_gcc-c99-noint64-defext.o obj/test_clang-gnu99-allint-defext.o obj/test_gcc-gnu99-noint64-defext.o obj/lib_clang-c11-noint64-defhere.o obj/test_clang-c11-allint-inline.o obj/test_clang-c99-noint64-noflags.o obj/test_clang-c99-allint-defext.o obj/test_gcc-gnu99-allint-defext.o obj/test_gcc-c99-allint-inline.o obj/test_clang-gnu89-allint-noflags.o obj/test_gcc-c11-noint64-noflags.o obj/lib_gcc-gnu89-noint64-defhere.o obj/test_gcc-c89-noint64-defhere.o obj/lib_gcc-c89-allint-defhere.o obj/test_gcc-c11-allint-defhere.o obj/test_clang-gnu99-noint64-inline.o obj/test_gcc-c11-noint64-inline.o obj/test_gcc-gnu89-allint-defext.o obj/test_clang-c99-noint64-defhere.o obj/lib_clang-gnu89-allint-defhere.o obj/lib_gcc-c11-noint64-defhere.o obj/test_gcc-c11-allint-noflags.o obj/test_clang-gnu89-noint64-defext.o obj/test_gcc-gnu99-allint-inline.o obj/test_clang-c11-noint64-noflags.o obj/test_gcc-c11-allint-defext.o obj/test_clang-gnu99-noint64-noflags.o obj/test_clang-gnu99-allint-defhere.o obj/test_clang-c99-noint64-inline.o obj/test_clang-c89-allint-defhere.o obj/test_gcc-gnu89-noint64-noflags.o obj/lib_clang-c89-noint64-defhere.o obj/test_clang-gnu89-noint64-inline.o obj/test_gcc-c99-allint-noflags.o obj/test_clang-c89-allint-noflags.o obj/test_gcc-gnu99-allint-defhere.o obj/lib_gcc-gnu89-allint-defhere.o obj/lib_clang-gnu99-allint-defhere.o obj/test_clang-c11-allint-defext.o obj/lib_clang-c89-allint-defhere.o obj/test_gcc-gnu99-noint64-defhere.o obj/lib_gcc-gnu99-allint-defhere.o obj/test_gcc-gnu99-noint64-inline.o obj/test_clang-c99-allint-inline.o obj/test_clang-gnu99-noint64-defhere.o obj/test_clang-gnu89-noint64-defhere.o obj/test_gcc-gnu99-noint64-noflags.o obj/lib_gcc-c89-noint64-defhere.o obj/test_gcc-gnu89-allint-noflags.o obj/test_gcc-c99-allint-defhere.o obj/test_clang-c89-noint64-defext.o obj/test_gcc-c11-noint64-defext.o obj/test_gcc-c99-noint64-inline.o obj/test_gcc-c99-noint64-defhere.o obj/test_clang-gnu89-allint-defhere.o obj/test_gcc-gnu89-allint-defhere.o obj/lib_gcc-c99-noint64-defhere.o obj/lib_clang-c99-noint64-defhere.o obj/test_clang-c99-allint-defhere.o obj/test_clang-gnu99-allint-inline.o obj/test_gcc-gnu89-noint64-defhere.o obj/test_gcc-c99-allint-defext.o obj/test_clang-c11-noint64-defhere.o obj/test_gcc-gnu89-allint-inline.o obj/lib_gcc-c11-allint-defhere.o obj/test_clang-gnu89-allint-inline.o obj/test_gcc-gnu99-allint-noflags.o obj/test_clang-c89-noint64-defhere.o obj/test_gcc-c11-noint64-defhere.o obj/test_clang-c89-allint-inline.o obj/test_clang-c89-noint64-inline.o obj/test_gcc-c11-allint-inline.o obj/test_clang-c89-noint64-noflags.o obj/lib_clang-gnu89-noint64-defhere.o obj/test_gcc-c89-allint-inline.o
+ALL_OBJS := obj/test_clang-c11-allint-noflags.o obj/test_gcc-c89-allint-noflags.o obj/test_clang-gnu99-noint64-defhere.o obj/test_gcc-c89-noint64-noflags.o obj/test_clang-c11-noint64-inline.o obj/test_clang-gnu89-noint64-noflags.o obj/test_gcc-c89-allint-defext.o obj/test_clang-gnu89-allint-defext.o obj/test_gcc-c89-allint-defhere.o obj/lib_gcc-gnu99-noint64-defhere.o obj/test_gcc-gnu89-noint64-inline.o obj/test_tcc-std-noint64-defext.o obj/test_gcc-c89-noint64-defext.o obj/test_gcc-gnu99-noint64-noflags.o obj/lib_clang-c99-allint-defhere.o obj/test_gcc-c99-noint64-defext.o obj/test_clang-gnu99-allint-noflags.o obj/test_gcc-c11-allint-defhere.o obj/test_gcc-c89-noint64-inline.o obj/lib_clang-gnu99-noint64-defhere.o obj/lib_clang-c89-noint64-defhere.o obj/test_tcc-std-noint64-defhere.o obj/test_clang-c99-noint64-defext.o obj/lib_gcc-c99-allint-defhere.o obj/test_gcc-c99-noint64-noflags.o obj/test_clang-c89-allint-defext.o obj/test_clang-gnu99-allint-defext.o obj/test_gcc-gnu99-noint64-defext.o obj/lib_clang-c11-noint64-defhere.o obj/test_clang-c11-allint-inline.o obj/test_clang-c99-noint64-noflags.o obj/test_clang-c99-allint-defext.o obj/test_tcc-std-allint-inline.o obj/test_gcc-c99-allint-inline.o obj/test_clang-gnu89-allint-noflags.o obj/test_gcc-c11-noint64-noflags.o obj/lib_gcc-gnu89-noint64-defhere.o obj/test_gcc-c89-noint64-defhere.o obj/lib_gcc-c89-allint-defhere.o obj/test_clang-c11-allint-defhere.o obj/test_tcc-std-noint64-inline.o obj/test_gcc-c11-noint64-inline.o obj/test_gcc-c89-allint-inline.o obj/test_clang-c99-noint64-defhere.o obj/lib_clang-gnu89-allint-defhere.o obj/lib_gcc-c11-noint64-defhere.o obj/lib_tcc-std-allint-defhere.o obj/test_gcc-c11-allint-noflags.o obj/test_clang-gnu89-noint64-defext.o obj/test_gcc-gnu99-allint-inline.o obj/test_clang-c11-noint64-noflags.o obj/test_gcc-c11-allint-defext.o obj/lib_clang-c11-allint-defhere.o obj/test_clang-gnu99-noint64-noflags.o obj/test_clang-gnu99-allint-defhere.o obj/test_clang-c11-allint-defext.o obj/test_clang-c89-allint-defhere.o obj/test_gcc-gnu89-noint64-noflags.o obj/lib_tcc-std-noint64-defhere.o obj/test_gcc-c99-noint64-inline.o obj/test_clang-gnu89-noint64-inline.o obj/test_gcc-gnu99-allint-defext.o obj/test_clang-c89-allint-noflags.o obj/test_gcc-gnu99-allint-defhere.o obj/lib_gcc-gnu89-allint-defhere.o obj/lib_clang-gnu99-allint-defhere.o obj/test_clang-c99-noint64-inline.o obj/test_gcc-c99-allint-noflags.o obj/test_gcc-gnu99-noint64-defhere.o obj/lib_gcc-gnu99-allint-defhere.o obj/lib_clang-c89-allint-defhere.o obj/test_gcc-gnu99-noint64-inline.o obj/test_clang-c99-allint-noflags.o obj/test_clang-c99-allint-inline.o obj/test_tcc-std-allint-noflags.o obj/test_clang-gnu99-noint64-defext.o obj/test_clang-gnu89-noint64-defhere.o obj/test_gcc-gnu89-allint-inline.o obj/test_gcc-gnu89-noint64-defext.o obj/lib_gcc-c89-noint64-defhere.o obj/test_gcc-gnu89-allint-noflags.o obj/test_tcc-std-allint-defext.o obj/test_gcc-c99-allint-defhere.o obj/test_clang-c89-noint64-defext.o obj/test_gcc-c11-noint64-defext.o obj/test_clang-c11-noint64-defext.o obj/test_gcc-c99-noint64-defhere.o obj/test_clang-gnu89-allint-defhere.o obj/test_gcc-gnu89-allint-defhere.o obj/lib_gcc-c99-noint64-defhere.o obj/lib_clang-c99-noint64-defhere.o obj/test_clang-gnu99-allint-inline.o obj/test_clang-c99-allint-defhere.o obj/test_gcc-gnu89-noint64-defhere.o obj/test_gcc-gnu89-allint-defext.o obj/test_gcc-c99-allint-defext.o obj/test_clang-c11-noint64-defhere.o obj/test_clang-gnu99-noint64-inline.o obj/lib_gcc-c11-allint-defhere.o obj/test_clang-gnu89-allint-inline.o obj/test_gcc-gnu99-allint-noflags.o obj/test_clang-c89-noint64-defhere.o obj/test_gcc-c11-noint64-defhere.o obj/test_clang-c89-allint-inline.o obj/test_clang-c89-noint64-inline.o obj/test_gcc-c11-allint-inline.o obj/test_clang-c89-noint64-noflags.o obj/lib_clang-gnu89-noint64-defhere.o obj/test_tcc-std-allint-defhere.o obj/test_tcc-std-noint64-noflags.o
 
 .PHONY: run-existing
 run-existing:
@@ -51,7 +52,11 @@ GCC_BINS := bin/gcc-c11-allint-defext bin/gcc-c11-allint-defhere bin/gcc-c11-all
 .PHONY: build-gcc-only
 build-gcc-only: ${GCC_BINS}
 
-ALL_BINS := ${CLANG_BINS} ${GCC_BINS}
+TCC_BINS := bin/tcc-std-allint-defext bin/tcc-std-allint-defhere bin/tcc-std-allint-inline bin/tcc-std-allint-noflags bin/tcc-std-noint64-defext bin/tcc-std-noint64-defhere bin/tcc-std-noint64-inline bin/tcc-std-noint64-noflags
+.PHONY: build-tcc-only
+build-tcc-only: ${TCC_BINS}
+
+ALL_BINS := ${CLANG_BINS} ${GCC_BINS} ${TCC_BINS}
 build-all: ${ALL_BINS}
 
 bin/clang-c11-allint-defext: test-functionality.c as-static-lib.c \
@@ -800,4 +805,62 @@ bin/gcc-gnu99-noint64-noflags: test-functionality.c \
 	@echo "Building bin/gcc-gnu99-noint64-noflags ..."
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -std=gnu99 -DPORTABLE_ENDIAN_NO_UINT_64_T -c -o obj/test_gcc-gnu99-noint64-noflags.o test-functionality.c
 	@${GCC} -Wall -Wextra -Werror -pedantic -O2 -g -o bin/gcc-gnu99-noint64-noflags obj/test_gcc-gnu99-noint64-noflags.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-allint-defext: test-functionality.c as-static-lib.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-allint-defext ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_tcc-std-allint-defhere.o as-static-lib.c
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_tcc-std-allint-defext.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-allint-defext obj/lib_tcc-std-allint-defhere.o obj/test_tcc-std-allint-defext.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-allint-defhere: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-allint-defhere ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_tcc-std-allint-defhere.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-allint-defhere obj/test_tcc-std-allint-defhere.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-allint-inline: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-allint-inline ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_tcc-std-allint-inline.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-allint-inline obj/test_tcc-std-allint-inline.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-allint-noflags: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-allint-noflags ..."
+	@${TCC} -Wall -Werror -g  -c -o obj/test_tcc-std-allint-noflags.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-allint-noflags obj/test_tcc-std-allint-noflags.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-noint64-defext: test-functionality.c as-static-lib.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-noint64-defext ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/lib_tcc-std-noint64-defhere.o as-static-lib.c
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY -c -o obj/test_tcc-std-noint64-defext.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-noint64-defext obj/lib_tcc-std-noint64-defhere.o obj/test_tcc-std-noint64-defext.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-noint64-defhere: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-noint64-defhere ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS= -c -o obj/test_tcc-std-noint64-defhere.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-noint64-defhere obj/test_tcc-std-noint64-defhere.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-noint64-inline: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-noint64-inline ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_NO_UINT_64_T -DPORTABLE_ENDIAN_MODIFIERS="static inline" -c -o obj/test_tcc-std-noint64-inline.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-noint64-inline obj/test_tcc-std-noint64-inline.o
+	@echo " => success (GOOD, matches documentation)"
+
+bin/tcc-std-noint64-noflags: test-functionality.c \
+		portable-endian/portable-endian.h
+	@echo "Building bin/tcc-std-noint64-noflags ..."
+	@${TCC} -Wall -Werror -g  -DPORTABLE_ENDIAN_NO_UINT_64_T -c -o obj/test_tcc-std-noint64-noflags.o test-functionality.c
+	@${TCC} -Wall -Werror -g -o bin/tcc-std-noint64-noflags obj/test_tcc-std-noint64-noflags.o
 	@echo " => success (GOOD, matches documentation)"
