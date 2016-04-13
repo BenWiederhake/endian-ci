@@ -7,7 +7,6 @@
 # Thus, your test system does *NOT* need to support Python.
 
 from collections import OrderedDict
-from itertools import product
 
 
 def ordered(d):
@@ -21,16 +20,29 @@ def ordered(d):
 compilers = ordered({
     'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
     'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g'})
-languages = ordered({
+languages_gnu = ordered({
     l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
+languages = {'gcc': languages_gnu, 'clang': languages_gnu}
 integers = ordered({
-    'allint': '',
-    'noint64': '-DPORTABLE_ENDIAN_NO_UINT_64_T'})
+    'allint': [],
+    'noint64': ['PORTABLE_ENDIAN_NO_UINT_64_T']})
 modes = ordered({
-    'noflags': '',
-    'inline': '-DPORTABLE_ENDIAN_MODIFIERS="static inline"',
-    'defhere': '-DPORTABLE_ENDIAN_MODIFIERS=',
-    'defext': '-DPORTABLE_ENDIAN_MODIFIERS= -DPORTABLE_ENDIAN_DECLS_ONLY'})
+    'noflags': [],
+    'inline': ['PORTABLE_ENDIAN_MODIFIERS="static inline"'],
+    'defhere': ['PORTABLE_ENDIAN_MODIFIERS='],
+    'defext': ['PORTABLE_ENDIAN_MODIFIERS=', 'PORTABLE_ENDIAN_DECLS_ONLY']})
+# Notes to 'flags':
+# 'link-out': This, and only this value is used to prefix the object-arg,
+#     so unixoid systems will need a space at the end
+# 'linker': This has the special interpretation for 'None' that means
+#     "Just re-use compiler[c] instead."
+flags_unix = {'compile-only': '-c', 'def-macro': '-D', 'compile-out': '-o ',
+              'linker': None, 'link-out': '-o '}
+flags = {'clang': flags_unix, 'gcc': flags_unix}
+
+# This must hold, no matter what your inputs.
+assert all([flags.values()[0].viewkeys() == flags[c].viewkeys()
+            for c in compilers])
 
 
 # ----------------
@@ -44,9 +56,18 @@ def obj_of(row, name, check=True):
     return obj
 
 
+def wrap_macros(c, macros):
+    def_macro = flags[c]['def-macro']
+    return [def_macro + m for m in macros]
+
+
 # Order is important, as globals are evaluated as soon as they are read,
 # so 'obj_of' needs to be already defined.
-all_rows = list(product(compilers, languages, integers, modes))
+all_rows = list([(c, l, i, m)
+                 for c in compilers
+                 for l in languages[c]
+                 for i in integers
+                 for m in modes])
 all_objs = {obj_of(row, 'test', check=False) for row in all_rows}
 all_objs = all_objs.union({obj_of((c, l, i, 'defhere'), 'lib', check=False)
                            for (c, l, i, _) in all_rows})
@@ -54,14 +75,25 @@ all_objs = all_objs.union({obj_of((c, l, i, 'defhere'), 'lib', check=False)
 
 def body_compile(row, src, obj):
     c, l, i, m = row
-    return " ".join([compilers[c], languages[l], integers[i],
-                     modes[m], '-c -o', obj, src])
+    dst_argv = [compilers[c], languages[c][l]] + \
+        wrap_macros(c, integers[i]) + \
+        wrap_macros(c, modes[m]) + \
+        [flags[c]['compile-only'], flags[c]['compile-out'] + obj, src]
+    return " ".join(dst_argv)
 
 
 def body_link(row, objs):
-    return " ".join([compilers[row[0]], '-o', 'bin/' + '-'.join(row)] + objs)
+    c, _, _, _ = row
+    linker = flags[c]['linker']
+    if linker is None:
+        linker = compilers[c]
+    out = flags[c]['link-out'] + 'bin/' + '-'.join(row)
+    return " ".join([linker, out] + objs)
 
 
+# Hint: This is probably ideal for testing your changes interactively.
+# Unless, of course, you're fiddling with the compatibility logic.
+# In that case, see below.
 def base_body(row, joiner):
     c, l, i, m = row
     cmds = []
