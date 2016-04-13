@@ -175,7 +175,7 @@ all: build-all run-existing
 gen_makefile: autogen
 \t@echo "Overwriting Makefile by explicit request."
 \t@echo "I hope you know what you're doing!"
-\t./autogen > Makefile
+\t./autogen > Makefile.tmp && mv -f Makefile.tmp Makefile
 
 .PHONY: build-all
 build-all: %s
@@ -202,7 +202,10 @@ portable-endian/portable-endian.h:
 .PHONY: clean
 clean:
 \t@echo 'rm -f $${ALL_BINS} $${ALL_OBJS}'
-\t@rm -f %s %s''' % \
+\t@rm -f %s %s
+\tls bin
+\tls obj
+\t@echo "End of 'clean'"''' % \
         (blinding, all_bins_str, all_bins_str, all_bins_str, " ".join(all_objs))
     gen_all_rules()
 
