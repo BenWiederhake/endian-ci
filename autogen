@@ -49,6 +49,8 @@ assert all([flags.values()[0].viewkeys() == flags[c].viewkeys()
 # ----------------
 # String construction (atoms) and globally cached objects
 
+bin_format = 'bin/%s-%s-%s-%s${FILE_EXT}'
+
 def obj_of(row, name, check=True):
     obj = 'obj/' + name + "_" + '-'.join(row) + ".o"
     if check and obj not in all_objs:
@@ -88,7 +90,7 @@ def body_link(row, objs):
     linker = flags[c]['linker']
     if linker is None:
         linker = compilers[c]
-    out = flags[c]['link-out'] + 'bin/' + '-'.join(row)
+    out = flags[c]['link-out'] + bin_format % row
     return " ".join([linker, out] + objs)
 
 
@@ -190,12 +192,13 @@ def gen_rule_body(row):
 
 def gen_rule_head(row):
     c, l, i, m = row
+    bin_file = bin_format % row
     # That initial line break is intentional.
     head_format = '''
-bin/%s-%s-%s-%s: test-functionality.c%s \\
+%s: test-functionality.c%s \\
 \t\tportable-endian/portable-endian.h'''
     print head_format % \
-        (c, l, i, m, ' as-static-lib.c' if m == 'defext' else '')
+        (bin_file, ' as-static-lib.c' if m == 'defext' else '')
 
 
 # ----------------
@@ -203,7 +206,7 @@ bin/%s-%s-%s-%s: test-functionality.c%s \\
 
 def gen_rule(row):
     gen_rule_head(row)
-    print '\t@echo "Building bin/%s ..."' % "-".join(row)
+    print '\t@echo "Building %s ..."' % (bin_format % row)
     gen_rule_body(row)
 
 
@@ -222,6 +225,7 @@ def gen_makefile():
 # Copyright 2016 Ben Wiederhake
 # License: MIT, see LICENSE
 
+FILE_EXT    ?=
 GCC         ?= gcc
 CLANG       ?= clang
 TCC         ?= tcc
@@ -264,7 +268,7 @@ clean:
 \t@echo "End of 'clean'"''' % \
         (blinding, all_objs_str)
     for c in compilers:
-        c_bins = ['bin/%s-%s-%s-%s' % row for row in all_rows if row[0]==c]
+        c_bins = [bin_format % row for row in all_rows if row[0]==c]
         # That initial line break is intentional.
         print '''
 %s_BINS := %s
