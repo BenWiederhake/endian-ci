@@ -9,10 +9,10 @@ matrix:
     - os: linux
       sudo: required
       dist: trusty
-      env: OS_CODENAME="Trusty Tahr" BUILD_TARGETS="build-all"
+      env: OS_CODENAME="Trusty Tahr" BUILD_TARGETS="build-gcc-only build-clang-only build-tcc-only"
     - os: linux
       sudo: false
-      env: OS_CODENAME="Precise Pangoblin" BUILD_TARGETS="build-all"
+      env: OS_CODENAME="Precise Pangoblin" BUILD_TARGETS="build-gcc-only build-clang-only build-tcc-only"
     - os: osx
       env: OS_CODENAME="OS X 10" BUILD_TARGETS="build-gcc-only build-clang-only"
 addons:

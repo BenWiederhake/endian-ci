@@ -20,10 +20,16 @@ def ordered(d):
 compilers = ordered({
     'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
     'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g',
-    'tcc': '${TCC} -Wall -Werror -g'})
+    'tcc': '${TCC} -Wall -Werror -g',
+    'msvc': '${MSVC_C} /Wall /sdl /WX'})
 languages_gnu = ordered({
     l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
-languages = {'gcc': languages_gnu, 'clang': languages_gnu, 'tcc': {'std': ''}}
+languages_ms = ordered({'ext':'', 'noext':'/Za /wd4001 /wd4127'})
+# 4001: MSVC's system headers are not conformant >_<
+# 4127: MSVC detects "constant conditionals" in the define_test(...) lines
+#       This may be an indication of some really clever optimizations.  Or not.
+languages = {'gcc': languages_gnu, 'clang': languages_gnu, 'tcc': {'std': ''},
+             'msvc': languages_ms}
 integers = ordered({
     'allint': [],
     'noint64': ['PORTABLE_ENDIAN_NO_UINT_64_T']})
@@ -39,7 +45,10 @@ modes = ordered({
 #     "Just re-use compiler[c] instead."
 flags_unix = {'compile-only': '-c', 'def-macro': '-D', 'compile-out': '-o ',
               'linker': None, 'link-out': '-o '}
-flags = {'clang': flags_unix, 'gcc': flags_unix, 'tcc': flags_unix}
+flags_ms = {'compile-only': '/c', 'def-macro': '/D', 'compile-out': '/Fo:',
+              'linker': '${MSVC_L} /WX', 'link-out': '/OUT:'}
+flags = {'clang': flags_unix, 'gcc': flags_unix, 'tcc': flags_unix,
+         'msvc': flags_ms}
 
 # This must hold, no matter what your inputs.
 assert all([flags.values()[0].viewkeys() == flags[c].viewkeys()
@@ -229,6 +238,8 @@ FILE_EXT    ?=
 GCC         ?= gcc
 CLANG       ?= clang
 TCC         ?= tcc
+MSVC_C      ?= CL
+MSVC_L      ?= LINK # Disambiguate from Unix 'link', aka 'ln'
 
 all: build-all run-existing
 
