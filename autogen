@@ -157,7 +157,7 @@ def gen_rule_body(row):
 
 def gen_rule_head(row):
     c, l, i, m = row
-    # That line break is intentional.
+    # That initial line break is intentional.
     head_format = '''
 bin/%s-%s-%s-%s: test-functionality.c%s \\
 \t\tportable-endian/portable-endian.h'''
@@ -180,8 +180,6 @@ def gen_all_rules():
 
 
 def gen_makefile():
-    all_bins = ['bin/%s-%s-%s-%s' % row for row in all_rows]
-    all_bins_str = " ".join(all_bins)
     all_objs_str = " ".join(all_objs)
     blinding = "OGEN"  # Make sure this file doesn't say AUTOG--ENERATED
     # Ugly, but not really preventable.
@@ -203,10 +201,6 @@ gen_makefile: autogen
 \t./autogen > Makefile.tmp && mv -f Makefile.tmp Makefile
 
 ALL_OBJS := %s
-ALL_BINS := %s
-
-.PHONY: build-all
-build-all: ${ALL_BINS}
 
 .PHONY: run-existing
 run-existing:
@@ -234,7 +228,17 @@ clean:
 \tls bin
 \tls obj
 \t@echo "End of 'clean'"''' % \
-        (blinding, all_objs_str, all_bins_str)
+        (blinding, all_objs_str)
+    for c in compilers:
+        c_bins = ['bin/%s-%s-%s-%s' % row for row in all_rows if row[0]==c]
+        # That initial line break is intentional.
+        print '''
+%s_BINS := %s
+.PHONY: build-%s-only
+build-%s-only: ${%s_BINS}''' % (c.upper(), ' '.join(c_bins), c, c, c.upper())
+    # That initial line break is intentional.
+    print '\nALL_BINS := ' + ' '.join(["${%s_BINS}" % c.upper() for c in compilers])
+    print 'build-all: ${ALL_BINS}'
     gen_all_rules()
 
 
