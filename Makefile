@@ -7,10 +7,12 @@ FILE_EXT    ?=
 GCC         ?= gcc
 CLANG       ?= clang
 TCC         ?= tcc
-MSVC_C      ?= CL
-MSVC_L      ?= LINK # Disambiguate from Unix 'link', aka 'ln'
+MSVC_C      ?= CL.exe
+MSVC_L      ?= LINK.exe
 
-all: build-all run-existing
+all:
+	echo There is no way to "do something useful" on all platforms.  Failing.
+	@false
 
 .PHONY: gen_makefile
 gen_makefile: autogen
@@ -20,8 +22,8 @@ gen_makefile: autogen
 
 ALL_OBJS := obj/test_clang-c11-allint-noflags.o obj/test_gcc-c89-allint-noflags.o obj/test_msvc-noext-noint64-inline.o obj/test_gcc-c89-noint64-noflags.o obj/test_clang-c11-noint64-inline.o obj/test_clang-gnu89-noint64-noflags.o obj/test_gcc-c89-allint-defext.o obj/test_clang-gnu89-allint-defext.o obj/test_msvc-ext-noint64-noflags.o obj/test_msvc-ext-allint-defext.o obj/test_gcc-c89-allint-defhere.o obj/test_msvc-noext-allint-defhere.o obj/test_gcc-gnu89-noint64-inline.o obj/test_tcc-std-noint64-defext.o obj/test_gcc-c89-noint64-defext.o obj/test_gcc-gnu99-noint64-noflags.o obj/lib_clang-c99-allint-defhere.o obj/test_gcc-c99-noint64-defext.o obj/test_clang-gnu99-allint-noflags.o obj/test_gcc-c11-allint-defhere.o obj/test_gcc-c89-noint64-inline.o obj/lib_clang-gnu99-noint64-defhere.o obj/lib_clang-c89-noint64-defhere.o obj/test_tcc-std-noint64-defhere.o obj/test_clang-c99-noint64-defext.o obj/lib_gcc-c99-allint-defhere.o obj/test_gcc-c99-noint64-noflags.o obj/test_clang-c89-allint-defext.o obj/test_clang-gnu99-allint-defext.o obj/test_msvc-noext-allint-inline.o obj/test_gcc-gnu99-noint64-defext.o obj/lib_clang-c11-noint64-defhere.o obj/test_clang-c11-allint-inline.o obj/test_clang-c99-noint64-noflags.o obj/test_clang-c99-allint-defext.o obj/test_msvc-ext-noint64-inline.o obj/lib_gcc-c89-noint64-defhere.o obj/test_gcc-c99-allint-inline.o obj/test_clang-gnu89-allint-noflags.o obj/test_gcc-c11-noint64-noflags.o obj/lib_msvc-noext-noint64-defhere.o obj/lib_gcc-gnu89-noint64-defhere.o obj/test_gcc-c89-noint64-defhere.o obj/lib_gcc-c89-allint-defhere.o obj/test_clang-c11-allint-defhere.o obj/test_tcc-std-noint64-inline.o obj/test_gcc-c11-noint64-inline.o obj/test_gcc-c89-allint-inline.o obj/test_clang-c99-noint64-defhere.o obj/lib_clang-gnu89-allint-defhere.o obj/lib_gcc-c11-noint64-defhere.o obj/test_msvc-ext-noint64-defext.o obj/test_gcc-c11-allint-noflags.o obj/test_clang-gnu99-noint64-defhere.o obj/test_clang-gnu89-noint64-defext.o obj/test_gcc-gnu99-allint-inline.o obj/test_clang-c11-noint64-noflags.o obj/test_gcc-c11-allint-defext.o obj/test_msvc-noext-noint64-defhere.o obj/lib_clang-c11-allint-defhere.o obj/test_clang-gnu99-noint64-noflags.o obj/test_clang-gnu99-allint-defhere.o obj/test_clang-c11-allint-defext.o obj/test_clang-c89-allint-defhere.o obj/test_gcc-gnu89-noint64-noflags.o obj/lib_tcc-std-noint64-defhere.o obj/lib_msvc-ext-allint-defhere.o obj/test_gcc-c99-noint64-inline.o obj/test_clang-gnu89-noint64-inline.o obj/test_gcc-gnu99-allint-defext.o obj/test_clang-c89-allint-noflags.o obj/test_gcc-gnu99-allint-defhere.o obj/lib_gcc-gnu89-allint-defhere.o obj/test_msvc-noext-allint-noflags.o obj/lib_clang-gnu99-allint-defhere.o obj/test_clang-c99-noint64-inline.o obj/test_msvc-ext-allint-defhere.o obj/test_gcc-c99-allint-noflags.o obj/test_gcc-gnu99-noint64-defhere.o obj/lib_gcc-gnu99-allint-defhere.o obj/lib_clang-c89-allint-defhere.o obj/test_gcc-gnu99-noint64-inline.o obj/test_clang-c99-allint-noflags.o obj/lib_tcc-std-allint-defhere.o obj/test_clang-c99-allint-inline.o obj/test_tcc-std-allint-noflags.o obj/test_msvc-ext-noint64-defhere.o obj/test_clang-gnu99-noint64-defext.o obj/test_clang-gnu89-noint64-defhere.o obj/test_msvc-noext-allint-defext.o obj/test_gcc-gnu89-allint-inline.o obj/test_gcc-gnu89-noint64-defext.o obj/test_msvc-ext-allint-noflags.o obj/test_tcc-std-allint-inline.o obj/test_gcc-gnu89-allint-noflags.o obj/test_tcc-std-allint-defext.o obj/test_gcc-c99-allint-defhere.o obj/lib_gcc-c11-allint-defhere.o obj/test_clang-c89-noint64-defext.o obj/test_gcc-c11-noint64-defext.o obj/test_clang-c11-noint64-defext.o obj/test_gcc-c99-noint64-defhere.o obj/test_clang-gnu89-allint-defhere.o obj/test_gcc-gnu89-allint-defhere.o obj/lib_gcc-c99-noint64-defhere.o obj/test_msvc-noext-noint64-noflags.o obj/lib_clang-c99-noint64-defhere.o obj/test_clang-gnu99-allint-inline.o obj/test_clang-c99-allint-defhere.o obj/test_gcc-gnu89-noint64-defhere.o obj/test_gcc-gnu89-allint-defext.o obj/test_gcc-c99-allint-defext.o obj/test_clang-c11-noint64-defhere.o obj/test_clang-gnu99-noint64-inline.o obj/test_msvc-ext-allint-inline.o obj/test_msvc-noext-noint64-defext.o obj/test_clang-gnu89-allint-inline.o obj/test_gcc-gnu99-allint-noflags.o obj/test_clang-c89-noint64-defhere.o obj/test_gcc-c11-noint64-defhere.o obj/test_clang-c89-allint-inline.o obj/test_clang-c89-noint64-inline.o obj/lib_gcc-gnu99-noint64-defhere.o obj/test_gcc-c11-allint-inline.o obj/test_clang-c89-noint64-noflags.o obj/lib_clang-gnu89-noint64-defhere.o obj/lib_msvc-ext-noint64-defhere.o obj/test_tcc-std-allint-defhere.o obj/test_tcc-std-noint64-noflags.o obj/lib_msvc-noext-allint-defhere.o
 
-.PHONY: run-existing
-run-existing:
+.PHONY: run-existing-posix
+run-existing-posix:
 	@for i in ${ALL_BINS}; \
 	do \
 		if test -x $$i ; \
@@ -32,6 +34,16 @@ run-existing:
 			echo "Running test $$i: SKIPPED, didn't build" ; \
 		fi \
 	done
+
+.PHONY: run-existing-ms
+run-existing-ms:
+	@for %i in (${ALL_BINS}) \
+	do \
+		if exist %i \
+			echo "Running test %i:" && \
+			%i || exit 1 \
+		else \
+			echo "Running test %i: SKIPPED, didn't build"
 
 portable-endian/portable-endian.h:
 	@echo "portable-endian/portable-endian.h not found."
@@ -817,116 +829,108 @@ bin/gcc-gnu99-noint64-noflags${FILE_EXT}: test-functionality.c \
 bin/msvc-ext-allint-defext${FILE_EXT}: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-allint-defext${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-ext-allint-defhere.o as-static-lib.c
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-ext-allint-defext.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-ext-allint-defhere.o as-static-lib.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-ext-allint-defext.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-allint-defext${FILE_EXT} obj/lib_msvc-ext-allint-defhere.o obj/test_msvc-ext-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-ext-allint-defhere${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-allint-defhere${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-ext-allint-defhere.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-ext-allint-defhere.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-allint-defhere${FILE_EXT} obj/test_msvc-ext-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-ext-allint-inline${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-allint-inline${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_MODIFIERS="static inline" /c /Fo:obj/test_msvc-ext-allint-inline.o test-functionality.c
-	@${MSVC_L} /WX /OUT:bin/msvc-ext-allint-inline${FILE_EXT} obj/test_msvc-ext-allint-inline.o
-	@echo " => success (GOOD, matches documentation)"
+	@echo "Skipping 'inline' build"
 
 bin/msvc-ext-allint-noflags${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-allint-noflags${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /c /Fo:obj/test_msvc-ext-allint-noflags.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /c /Fo:obj/test_msvc-ext-allint-noflags.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-allint-noflags${FILE_EXT} obj/test_msvc-ext-allint-noflags.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-ext-noint64-defext${FILE_EXT}: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-noint64-defext${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-ext-noint64-defhere.o as-static-lib.c
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-ext-noint64-defext.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-ext-noint64-defhere.o as-static-lib.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-ext-noint64-defext.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-noint64-defext${FILE_EXT} obj/lib_msvc-ext-noint64-defhere.o obj/test_msvc-ext-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-ext-noint64-defhere${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-noint64-defhere${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-ext-noint64-defhere.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-ext-noint64-defhere.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-noint64-defhere${FILE_EXT} obj/test_msvc-ext-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-ext-noint64-inline${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-noint64-inline${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS="static inline" /c /Fo:obj/test_msvc-ext-noint64-inline.o test-functionality.c
-	@${MSVC_L} /WX /OUT:bin/msvc-ext-noint64-inline${FILE_EXT} obj/test_msvc-ext-noint64-inline.o
-	@echo " => success (GOOD, matches documentation)"
+	@echo "Skipping 'inline' build"
 
 bin/msvc-ext-noint64-noflags${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-ext-noint64-noflags${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX  /DPORTABLE_ENDIAN_NO_UINT_64_T /c /Fo:obj/test_msvc-ext-noint64-noflags.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127  /DPORTABLE_ENDIAN_NO_UINT_64_T /c /Fo:obj/test_msvc-ext-noint64-noflags.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-ext-noint64-noflags${FILE_EXT} obj/test_msvc-ext-noint64-noflags.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-allint-defext${FILE_EXT}: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-allint-defext${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-noext-allint-defhere.o as-static-lib.c
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-noext-allint-defext.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-noext-allint-defhere.o as-static-lib.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-noext-allint-defext.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-allint-defext${FILE_EXT} obj/lib_msvc-noext-allint-defhere.o obj/test_msvc-noext-allint-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-allint-defhere${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-allint-defhere${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-noext-allint-defhere.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-noext-allint-defhere.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-allint-defhere${FILE_EXT} obj/test_msvc-noext-allint-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-allint-inline${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-allint-inline${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_MODIFIERS="static inline" /c /Fo:obj/test_msvc-noext-allint-inline.o test-functionality.c
-	@${MSVC_L} /WX /OUT:bin/msvc-noext-allint-inline${FILE_EXT} obj/test_msvc-noext-allint-inline.o
-	@echo " => success (GOOD, matches documentation)"
+	@echo "Skipping 'inline' build"
 
 bin/msvc-noext-allint-noflags${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-allint-noflags${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /c /Fo:obj/test_msvc-noext-allint-noflags.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /c /Fo:obj/test_msvc-noext-allint-noflags.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-allint-noflags${FILE_EXT} obj/test_msvc-noext-allint-noflags.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-noint64-defext${FILE_EXT}: test-functionality.c as-static-lib.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-noint64-defext${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-noext-noint64-defhere.o as-static-lib.c
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-noext-noint64-defext.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/lib_msvc-noext-noint64-defhere.o as-static-lib.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /DPORTABLE_ENDIAN_DECLS_ONLY /c /Fo:obj/test_msvc-noext-noint64-defext.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-noint64-defext${FILE_EXT} obj/lib_msvc-noext-noint64-defhere.o obj/test_msvc-noext-noint64-defext.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-noint64-defhere${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-noint64-defhere${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-noext-noint64-defhere.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS= /c /Fo:obj/test_msvc-noext-noint64-defhere.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-noint64-defhere${FILE_EXT} obj/test_msvc-noext-noint64-defhere.o
 	@echo " => success (GOOD, matches documentation)"
 
 bin/msvc-noext-noint64-inline${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-noint64-inline${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_NO_UINT_64_T /DPORTABLE_ENDIAN_MODIFIERS="static inline" /c /Fo:obj/test_msvc-noext-noint64-inline.o test-functionality.c
-	@${MSVC_L} /WX /OUT:bin/msvc-noext-noint64-inline${FILE_EXT} obj/test_msvc-noext-noint64-inline.o
-	@echo " => success (GOOD, matches documentation)"
+	@echo "Skipping 'inline' build"
 
 bin/msvc-noext-noint64-noflags${FILE_EXT}: test-functionality.c \
 		portable-endian/portable-endian.h
 	@echo "Building bin/msvc-noext-noint64-noflags${FILE_EXT} ..."
-	@${MSVC_C} /Wall /sdl /WX /Za /wd4001 /wd4127 /DPORTABLE_ENDIAN_NO_UINT_64_T /c /Fo:obj/test_msvc-noext-noint64-noflags.o test-functionality.c
+	@${MSVC_C} /Wall /sdl /WX /wd4127 /Za /wd4001 /DPORTABLE_ENDIAN_NO_UINT_64_T /c /Fo:obj/test_msvc-noext-noint64-noflags.o test-functionality.c
 	@${MSVC_L} /WX /OUT:bin/msvc-noext-noint64-noflags${FILE_EXT} obj/test_msvc-noext-noint64-noflags.o
 	@echo " => success (GOOD, matches documentation)"
 

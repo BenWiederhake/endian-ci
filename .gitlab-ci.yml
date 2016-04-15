@@ -23,7 +23,7 @@ build_project:
 # tcc can't find <stdio.h>, I don't know how they achieved that.
 # Discussion: https://lists.freebsd.org/pipermail/freebsd-ports/2016-April/102814.html
 # TODO: Check with "pkg upgrade tcc" if something changed, and try again.
-    - env MAKEOBJDIR="83dfd219-a074-4361-9442-b38485644ad1" make build-gcc-only build-clang-only run-existing
+    - env MAKEOBJDIR="83dfd219-a074-4361-9442-b38485644ad1" make build-gcc-only build-clang-only run-existing-posix
   tags:
     - make
     - c

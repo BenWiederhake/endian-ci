@@ -28,4 +28,4 @@ script:
 #  - if [ "x${OS_CODENAME}" = "xOS X 10" ] ; then brew install tcc ; fi
 #  - make -k
 ## So instead, do this:
-  - make -k ${BUILD_TARGETS} run-existing
+  - make -k ${BUILD_TARGETS} run-existing-posix

@@ -21,13 +21,13 @@ compilers = ordered({
     'clang': '${CLANG} -Weverything -Werror -pedantic -O2 -g',
     'gcc': '${GCC} -Wall -Wextra -Werror -pedantic -O2 -g',
     'tcc': '${TCC} -Wall -Werror -g',
-    'msvc': '${MSVC_C} /Wall /sdl /WX'})
-languages_gnu = ordered({
-    l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
-languages_ms = ordered({'ext':'', 'noext':'/Za /wd4001 /wd4127'})
-# 4001: MSVC's system headers are not conformant >_<
+    'msvc': '${MSVC_C} /Wall /sdl /WX /wd4127'})
 # 4127: MSVC detects "constant conditionals" in the define_test(...) lines
 #       This may be an indication of some really clever optimizations.  Or not.
+languages_gnu = ordered({
+    l: ("-std=%s" % l) for l in ['c89', 'gnu89', 'c99', 'gnu99', 'c11']})
+languages_ms = ordered({'ext': '', 'noext': '/Za /wd4001'})
+# 4001: MSVC's system headers are not conformant >_<
 languages = {'gcc': languages_gnu, 'clang': languages_gnu, 'tcc': {'std': ''},
              'msvc': languages_ms}
 integers = ordered({
@@ -46,7 +46,7 @@ modes = ordered({
 flags_unix = {'compile-only': '-c', 'def-macro': '-D', 'compile-out': '-o ',
               'linker': None, 'link-out': '-o '}
 flags_ms = {'compile-only': '/c', 'def-macro': '/D', 'compile-out': '/Fo:',
-              'linker': '${MSVC_L} /WX', 'link-out': '/OUT:'}
+            'linker': '${MSVC_L} /WX', 'link-out': '/OUT:'}
 flags = {'clang': flags_unix, 'gcc': flags_unix, 'tcc': flags_unix,
          'msvc': flags_ms}
 
@@ -59,6 +59,7 @@ assert all([flags.values()[0].viewkeys() == flags[c].viewkeys()
 # String construction (atoms) and globally cached objects
 
 bin_format = 'bin/%s-%s-%s-%s${FILE_EXT}'
+
 
 def obj_of(row, name, check=True):
     obj = 'obj/' + name + "_" + '-'.join(row) + ".o"
@@ -185,6 +186,15 @@ def gen_rule_body(row):
     if l == 'c89' and m == 'inline':
         # 'inline' is not a keyword in C89:
         return gen_test_fail(row)
+    if c == 'msvc' and m == 'inline':
+        # MSVC seems to hate 'inline'.  Huh?
+        # FIXME: I'm sure MSVC actually *does* understand inline.  But how?
+        # Ideally, do 'return gen_test_fail(row)',
+        # but Windows has no POSIX shell.
+        # FIXME: gen_test_fail for Windows?
+        # Until then, just don't do anything.
+        print '''\t@echo "Skipping 'inline' build"'''
+        return
     if l == 'gnu89' and m == 'inline':
         if c == 'clang':
             # clang thinks that 'inline' isn't a keyword in gnu89
@@ -238,10 +248,12 @@ FILE_EXT    ?=
 GCC         ?= gcc
 CLANG       ?= clang
 TCC         ?= tcc
-MSVC_C      ?= CL
-MSVC_L      ?= LINK # Disambiguate from Unix 'link', aka 'ln'
+MSVC_C      ?= CL.exe
+MSVC_L      ?= LINK.exe
 
-all: build-all run-existing
+all:
+\techo There is no way to "do something useful" on all platforms.  Failing.
+\t@false
 
 .PHONY: gen_makefile
 gen_makefile: autogen
@@ -251,8 +263,8 @@ gen_makefile: autogen
 
 ALL_OBJS := %s
 
-.PHONY: run-existing
-run-existing:
+.PHONY: run-existing-posix
+run-existing-posix:
 \t@for i in ${ALL_BINS}; \\
 \tdo \\
 \t\tif test -x $$i ; \\
@@ -263,6 +275,16 @@ run-existing:
 \t\t\techo "Running test $$i: SKIPPED, didn't build" ; \\
 \t\tfi \\
 \tdone
+
+.PHONY: run-existing-ms
+run-existing-ms:
+\t@for %%i in (${ALL_BINS}) \\
+\tdo \\
+\t\tif exist %%i \\
+\t\t\techo "Running test %%i:" && \\
+\t\t\t%%i || exit 1 \\
+\t\telse \\
+\t\t\techo "Running test %%i: SKIPPED, didn't build"
 
 portable-endian/portable-endian.h:
 \t@echo "portable-endian/portable-endian.h not found."
@@ -279,14 +301,15 @@ clean:
 \t@echo "End of 'clean'"''' % \
         (blinding, all_objs_str)
     for c in compilers:
-        c_bins = [bin_format % row for row in all_rows if row[0]==c]
+        c_bins = [bin_format % row for row in all_rows if row[0] == c]
         # That initial line break is intentional.
         print '''
 %s_BINS := %s
 .PHONY: build-%s-only
 build-%s-only: ${%s_BINS}''' % (c.upper(), ' '.join(c_bins), c, c, c.upper())
     # That initial line break is intentional.
-    print '\nALL_BINS := ' + ' '.join(["${%s_BINS}" % c.upper() for c in compilers])
+    print '\nALL_BINS := ' + ' '.join(["${%s_BINS}" % c.upper()
+                                       for c in compilers])
     print 'build-all: ${ALL_BINS}'
     gen_all_rules()
 
