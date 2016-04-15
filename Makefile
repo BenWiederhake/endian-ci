@@ -36,14 +36,12 @@ run-existing-posix:
 	done
 
 .PHONY: run-existing-ms
-run-existing-ms:
-	@for %i in (${ALL_BINS}) \
-	do \
-		if exist %i \
-			echo "Running test %i:" && \
-			%i || exit 1 \
-		else \
-			echo "Running test %i: SKIPPED, didn't build"
+run-existing-ms: # GNU extension is kinda okay here, due to MinGW
+	@for %%i in (${patsubst bin/%,bin\\%,${ALL_BINS}}) do if exist %%i ( \
+			echo "Running test %%i:" && %%i || exit 1 \
+		) else ( \
+			echo "Running test %%i: SKIPPED, didn't build" \
+		)
 
 portable-endian/portable-endian.h:
 	@echo "portable-endian/portable-endian.h not found."
